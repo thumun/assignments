@@ -1,6 +1,9 @@
-//
-// Created by Neha Thumu on 1/15/22.
-//
+/***************************************************
+ * fortune.c
+ * Author: Neha Thumu
+ * Date: 1/16/2022
+ * Print fortune
+ */
 
 #include <stdio.h>
 
