@@ -1,15 +1,34 @@
 #include <stdio.h>
-#include <string.h> 
+#include <string.h>
+
+// global variables
+int money;
+struct snack {
+    char name[100];
+    float cost;
+    int quantity;
+};
+
+void buy_snack(struct snack item, float  money){
+	if (item.quantity == 0){ 
+		printf("Sorry, %s is out of stock!", item.name);
+	} else if (item.cost > money){
+		printf("Sorry, you do not have enough money to purchase %s", item.name);
+	} else {
+        printf("Thank you for purchasing %s!\n", item.name);
+        printf("Your current balance is: %f", money - item.cost);
+    }
+} 
 
 int main() {
-  int money;
+  // int money;
   int option;
 
-  struct snack {
-	char name[100]; 
-	float cost; 
-	int quantity; 
-  }; 
+//  struct snack {
+//	char name[100];
+//	float cost;
+//	int quantity;
+//  };
 
   struct snack gummy, choco, gum;   
 
@@ -25,7 +44,11 @@ int main() {
   gum.cost = 0.75; 
   gum.quantity = 3; 
 
-  struct snack options[3]; 
+  struct snack options[3];
+  
+  options[0] = gummy; 
+  options[1] = choco; 
+  options[2] = gum;  
   //options = [gummy, choco, gum]; 
 
   printf("Welcome to Neha's Fantastic Snacks.\n\n");
@@ -34,16 +57,21 @@ int main() {
   scanf("%d", &money);
 
   printf("0) %s \t\t cost: $%0.2f \t quantity: %d\n", gummy.name, gummy.cost, gummy.quantity);
-  printf("1) %s \t\t cost: $%f \t quantity: %d\n", choco.name, choco.cost, choco.quantity); 
-  printf("2) %s \t\t cost: $%f \t quantity: %d\n", gum.name, gum.cost, gum.quantity); 
+  printf("1) %s \t\t cost: $%0.2f \t quantity: %d\n", choco.name, choco.cost, choco.quantity);
+  printf("2) %s \t\t cost: $%0.2f \t quantity: %d\n", gum.name, gum.cost, gum.quantity);
 
   printf("\nWhat snack would you like to buy? [0, 1, 2]");
   scanf("%d", &option);
 
-  // if good: say bought item 
-  
-  // check if have enough money 
-  // check if have quantity  
+  if (option == 0){
+	buy_snack(options[0], money);
+  } else if (option == 1){
+	buy_snack(options[1], money);
+  } else if (option == 2){
+	buy_snack(options[2], money);
+  } else {
+	printf("Snack not available"); 
+  } 
 
   return 0;
 }
