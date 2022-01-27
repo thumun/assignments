@@ -16,7 +16,7 @@ void buy_snack(struct snack item, float  money){
 		printf("Sorry, you do not have enough money to purchase %s", item.name);
 	} else {
         printf("Thank you for purchasing %s!\n", item.name);
-        printf("Your current balance is: %f", money - item.cost);
+        printf("Your current balance is: $%0.3f", money - item.cost);
     }
 } 
 
