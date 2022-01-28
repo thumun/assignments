@@ -3,6 +3,32 @@
 #include <time.h>
 #include <string.h>
 
+//void pick_winner(char * user_choice, int AIPick, const char * game_options[]){
+//    int user;
+//    int winner;
+//
+//    if (strcmp(user_choice, game_options[0]) == 0){
+//        user = 0;
+//    } else if (strcmp(user_choice, game_options[1]) == 0) {
+//        user = 1;
+//    } else if (strcmp(user_choice, game_options[2]) == 0) {
+//        user = 2;
+//    }
+//
+//    if (AIPick > user){
+//
+//
+//    } else if (AIPick == user){
+//
+//
+//    } else {
+//
+//    }
+//
+//    printf("%s bashes %s\n", user_choice, AI_choice);
+//
+//}
+
 int AI_pick(){
     int random_variable = rand();
     return random_variable % 3;
@@ -10,58 +36,68 @@ int AI_pick(){
 
 void game(int rounds){
     char user_choice[100];
-    char AI_choice[100];
-    int user_score;
-    int AI_score;
+    const char * AI_choice;
+    int AIPick;
+    int user_score = 0;
+    int AI_score = 0;
+    int winner;
 
     // * = pointer to a string
     // is array size 3; each type is char * (string)
     const char * game_options[3] = {"rock", "paper", "scissors"};
 
-//    char * a = "hi";
-//    strcpy(a, "aa");
-//    printf("%s", a);
+    while (rounds != 0) {
 
-    printf("Which do you choose? rock, paper, or scissors?\n");
-    scanf("%s", user_choice);
+        printf("Which do you choose? rock, paper, or scissors? ");
+        scanf("%s", user_choice);
 
-    // using random num to get AI's choice
-    AI_score = AI_pick();
+        // using random num to get AI's choice
+        AIPick = AI_pick();
+        AI_choice = game_options[AIPick];
 
-    printf("AI chose %s\n", game_options[AI_score]);
+        printf("AI chose %s\n", AI_choice);
 
-    // can optimize the defeat??
+        //winner = pick_winner(user_choice, AI_score, game_options);
 
-    // make sure to incorporate while loop for rounds!!
+        if (((strcmp(user_choice, "rock") == 0) && (strcmp(AI_choice, "scissors") == 0))){
+            printf("%s bashes %s\n", user_choice, AI_choice);
+            user_score += 1;
+        } else if (((strcmp(user_choice, "paper") == 0) && (strcmp(AI_choice, "rock") == 0))){
+            printf("%s covers %s\n", user_choice, AI_choice);
+            user_score += 1;
+        }
+        else if (((strcmp(user_choice, "scissors") == 0) && (strcmp(AI_choice, "paper") == 0))){
+            printf("%s cuts %s\n", user_choice, AI_choice);
+            user_score += 1;
+        } else if (strcmp(user_choice, AI_choice) == 0) {
+            printf("It's a draw!\n");
+        } else if (strcmp(user_choice, "rock") != 0
+                   && strcmp(user_choice, "paper") != 0
+                   && strcmp(user_choice, "scissors") != 0) {
 
-    // testing
-    printf("user choice test: %d\n", (strcmp(user_choice, "rock ") == 0));
-    printf("ai choice test: %d\n", strcmp(AI_choice, "scissors") == 0);
+            printf("You entered an invalid choice: %s\n", user_choice);
+            printf("%lu", strlen(user_choice));
+        } else {
+            if (((strcmp(user_choice, "rock") == 0) && (strcmp(AI_choice, "scissors") == 0))){
+                printf("%s bashes %s\n", AI_choice, user_choice);
+            } else if (((strcmp(user_choice, "paper") == 0) && (strcmp(AI_choice, "rock") == 0))){
+                printf("%s covers %s\n", AI_choice, user_choice);
+            }
+            else if (((strcmp(user_choice, "scissors") == 0) && (strcmp(AI_choice, "paper") == 0))){
+                printf("%s cuts %s\n", AI_choice, user_choice);
+            }
 
-    if (!((strcmp(user_choice, "rock") == 0) && (strcmp(AI_choice, "scissors") == 0))
-        || !((strcmp(user_choice, "paper") == 0) && (strcmp(AI_choice, "rock") == 0))
-            || !((strcmp(user_choice, "scissors") == 0) && (strcmp(AI_choice, "paper") == 0))) {
+            AI_score += 1;
+        }
 
-        printf("%s defeats %s\n", user_choice, AI_choice);
-        user_score += 1;
-    } else if (strcmp(user_choice, AI_choice) == 0){
-        printf("It's a draw!\n");
-    } else if (strcmp(user_choice, "rock") != 0
-        || strcmp(user_choice, "paper") != 0
-            || strcmp(user_choice, "scissors") != 0 ) {
+        printf("AI score: %d, Player score: %d\n", AI_score, user_score);
 
-        printf("You entered an invalid choice: %s\n", user_choice);
-    } else {
-        printf("%s defeats %s\n", AI_choice, user_choice);
-        AI_score += 1;
+        rounds -= 1;
     }
-
-    // why isn't & used?
-    printf("AI score: %d, Player score: %d\n", AI_score, user_score);
 }
 
 int main() {
-  srand(time(0)); //??
+  srand(time(0));
   int rounds;
 
   printf("Welcome to Rock, Paper, Scissors!\n");

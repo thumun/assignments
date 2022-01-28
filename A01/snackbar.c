@@ -3,12 +3,15 @@
 
 // global variables
 int money;
+
+// struct contains necessary info about snacks
 struct snack {
     char name[100];
     float cost;
     int quantity;
 };
 
+// diff. outcomes when buying a snack
 void buy_snack(struct snack item, float  money){
 	if (item.quantity == 0){ 
 		printf("Sorry, %s is out of stock!", item.name);
@@ -21,14 +24,7 @@ void buy_snack(struct snack item, float  money){
 } 
 
 int main() {
-  // int money;
   int option;
-
-//  struct snack {
-//	char name[100];
-//	float cost;
-//	int quantity;
-//  };
 
   struct snack gummy, choco, gum;   
 
@@ -49,7 +45,6 @@ int main() {
   options[0] = gummy; 
   options[1] = choco; 
   options[2] = gum;  
-  //options = [gummy, choco, gum]; 
 
   printf("Welcome to Neha's Fantastic Snacks.\n\n");
   printf("How much money do you have?\n\n"); 
@@ -60,7 +55,7 @@ int main() {
   printf("1) %s \t\t cost: $%0.2f \t quantity: %d\n", choco.name, choco.cost, choco.quantity);
   printf("2) %s \t\t cost: $%0.2f \t quantity: %d\n", gum.name, gum.cost, gum.quantity);
 
-  printf("\nWhat snack would you like to buy? [0, 1, 2]");
+  printf("\nWhat snack would you like to buy? [0, 1, 2] ");
   scanf("%d", &option);
 
   if (option == 0){
