@@ -23,7 +23,6 @@ int pickWinner(const char * first, const char * second, char * msg){
 
         return 0;
     }
-
 }
 
 // AI choice for rps game
