@@ -56,7 +56,7 @@ void guess(char * str){
         turnCount++;
     }
 
-    // word & win statement
+    // guessed word & win statement
     printf("%s\n", blanks);
     printf("You won in %d turns!\n", turnCount);
 
@@ -65,6 +65,7 @@ void guess(char * str){
     blanks = NULL;
 }
 
+// removing unnecessary content in string that's messing with strlen
 void trimStr(char * str){
     for (int i = 0; i < strlen(str); i++){
         // \r = carriage return = causes extra char in strlen
@@ -80,14 +81,19 @@ int main() {
     int totalWords;
     char str[32]; // max length of word
 
+    // want rand word each time
     srand(time(0));
 
     wordList = fopen("words.txt", "r");
 
+    // getting the first item in words file which is num words
     fscanf(wordList, "%d", &totalWords);
 
+    // picking random num from num of words in file
+    // -2 b/c don't want the number (first element)
+    // & don't want to go over the num words in file
     int randNum = rand() % (totalWords-2);
-    randNum++; // avoiding the number as first element
+    randNum++; // avoiding the number as first element in case above = 0
 
     int counter = 0;
 
@@ -96,6 +102,8 @@ int main() {
         exit(1);
     }
 
+    // cycling through the words until getting the randNum one
+    // then trimming the str so fit for game
     while (fgets(str, sizeof(str), wordList)) {
         counter++;
         if (counter == randNum){
@@ -110,6 +118,5 @@ int main() {
     printf("\nWelcome to Word Guess!\n");
     guess(str);
 
-
-  return 0;
+    return 0;
 }
