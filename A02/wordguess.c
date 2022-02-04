@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+// if guess is right then updates the blanks to show letter in correct spot in word
 void checkGuess(char * blanks, char * str, char usrGuess){
     for (int i = 0; i < strlen(blanks); i++){
         if (usrGuess == str[i]){
@@ -11,6 +12,8 @@ void checkGuess(char * blanks, char * str, char usrGuess){
     }
 }
 
+// initializing blanks array based on length of str
+// filling with same number of blanks as str
 void blankSpaceGen(char * blanks, int size){
     for (int i = 0; i < size-1; i++){
         blanks[i] = '_';
@@ -19,17 +22,24 @@ void blankSpaceGen(char * blanks, int size){
 }
 
 void guess(char * str){
-    printf("%s", str);
-    // strlen doesn't account for null termination
+    //printf("%s", str); // testing by cheating :)
+
+    // allocating space for blanks array
+    // strlen doesn't account for null termination so +1
     char * blanks = (char *) malloc(strlen(str) + 1);
 
-    int counter = 0;
+    if (blanks == NULL){
+        printf("\nmalloc failed. exiting...");
+        exit(1);
+    }
 
     int turnCount = 1;
     char usrGuess[10];
 
+    // generating blank spaces in arr based on str length
     blankSpaceGen(blanks, strlen(str)+1);
 
+    // continues until guess (blanks) same as random word (str)
     while(strcmp(blanks, str) != 0){
         printf("\nTurn: %d\n\n", turnCount);
 
@@ -40,16 +50,17 @@ void guess(char * str){
 
         printf("\n");
 
+        // logic for guessing
         checkGuess(blanks, str, usrGuess[0]);
 
         turnCount++;
-
-        counter++;
     }
 
+    // word & win statement
     printf("%s\n", blanks);
     printf("You won in %d turns!\n", turnCount);
 
+    // deallocating & freeing pointer
     free(blanks);
     blanks = NULL;
 }
