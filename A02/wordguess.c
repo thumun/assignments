@@ -5,10 +5,23 @@
 
 // if guess is right then updates the blanks to show letter in correct spot in word
 void checkGuess(char * blanks, char * str, char usrGuess){
+    int counter = 0;
+
     for (int i = 0; i < strlen(blanks); i++){
+        counter++;
+
         if (usrGuess == str[i]){
+            if (blanks[i] == usrGuess){
+                printf("You already guessed %c", usrGuess);
+                break;
+            }
             blanks[i] = str[i];
+            counter = 0;
         }
+    }
+
+    if (counter == strlen(blanks)){
+        printf("Sorry, %c not found!", usrGuess);
     }
 }
 
@@ -22,7 +35,7 @@ void blankSpaceGen(char * blanks, int size){
 }
 
 void guess(char * str){
-    //printf("%s", str); // testing by cheating :)
+    printf("%s", str); // testing by cheating :)
 
     // allocating space for blanks array
     // strlen doesn't account for null termination so +1
