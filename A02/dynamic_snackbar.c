@@ -38,7 +38,7 @@ int main() {
     // seeing if malloc working
     if (opts == NULL){
         printf("\nmalloc failed. exiting...");
-        exit(1);
+        return 1;
     }
 
     // temp struct snack points to a struct in array
@@ -50,7 +50,7 @@ int main() {
         createSnacks(temp);
     }
 
-    printf("Welcome to Neha's Amazing Snack Bar!\n");
+    printf("\nWelcome to Neha's Amazing Snack Bar!\n");
     printSnacks(opts, numSnacks);
 
     // deallocating & freeing

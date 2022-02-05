@@ -30,7 +30,7 @@ void guess(char * str){
 
     if (blanks == NULL){
         printf("\nmalloc failed. exiting...");
-        exit(1);
+        return;
     }
 
     int turnCount = 1;
@@ -99,7 +99,7 @@ int main() {
 
     if (wordList == NULL) {
         perror("Error opening file"); // print error
-        exit(1);
+        return 1;
     }
 
     // cycling through the words until getting the randNum one

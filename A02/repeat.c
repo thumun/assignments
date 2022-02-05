@@ -1,37 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-// prints the inputStr inputNum times
-void printUsrStr(char* inputStr, int inputNum){ 
-  for (int i = 0; i < inputNum; i++){
-    printf("%s", inputStr); 
-  }    
+// fills output with inputNum number of inputStr
+void fillOutput(char * inputStr, unsigned long inputNum, char * output) {
+
+    for (unsigned long i = 0; i < inputNum; i++){
+        for (int j = 0; j < strlen(inputStr); j++){
+            output[j+(i*strlen(inputStr))] = inputStr[j];
+        }
+    }
+
+    // adding null termination
+    output[strlen(inputStr)*inputNum] = '\0';
 }
 
 int main() {
-  char* inputStr = NULL; 
-  int inputNum;
+  char inputStr [32];
+  unsigned long inputNum;
 
-  // allocating space for user input
-  inputStr = (char *) malloc(32);
-
-  // check if malloc is successful
-  if (inputStr == NULL){
-    printf("\nCannot allocate new string. Exiting...");
-    exit(1);
-  }
+  char * output;
 
   printf("Enter a word: "); 
   scanf("%s", inputStr);
 
   printf("Enter a count: "); 
-  scanf("%d", &inputNum);  
+  scanf("%lu", &inputNum);
 
-  printUsrStr(inputStr, inputNum); 
+  // +1 for accounting for null termination
+  output = (char *) malloc(strlen(inputStr)*inputNum + 1);
+
+  // check if malloc is successful
+  if (output == NULL){
+    printf("\nCannot allocate new string. Exiting...");
+    return 1;
+  }
+
+  fillOutput(inputStr, inputNum, output);
+
+  printf("%s", output);
 
   // deallocating & freeing pointer
-  free(inputStr);
-  inputStr = NULL;
+  free(output);
+  output = NULL;
 
   return 0;
 }
