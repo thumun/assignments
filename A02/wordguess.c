@@ -12,7 +12,7 @@ void checkGuess(char * blanks, char * str, char usrGuess){
 
         if (usrGuess == str[i]){
             if (blanks[i] == usrGuess){
-                printf("You already guessed %c", usrGuess);
+                printf("You already guessed %c\n", usrGuess);
                 break;
             }
             blanks[i] = str[i];
@@ -21,7 +21,7 @@ void checkGuess(char * blanks, char * str, char usrGuess){
     }
 
     if (counter == strlen(blanks)){
-        printf("Sorry, %c not found!", usrGuess);
+        printf("Sorry, %c not found!\n", usrGuess);
     }
 }
 
