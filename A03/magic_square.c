@@ -30,6 +30,9 @@ int calculateArr(int num, int ** magicSqu){
         }
     }
 
+    free(calcArr);
+    calcArr = NULL;
+
     return comparison;
 }
 
@@ -39,6 +42,8 @@ int calculateDiag(int num, int ** magicSqu){
     int counter = 0;
 
     calcArr = (int *) malloc(sizeof(int)*num);
+
+    // should I set stuff in array to zero?
 
     for (int i = 0; i < num; i++){
         for (int j = 0; j < num; j++){
@@ -59,6 +64,9 @@ int calculateDiag(int num, int ** magicSqu){
     if (calcArr[0] == calcArr[1]){
         comparison = calcArr[0];
     }
+
+    free(calcArr);
+    calcArr = NULL;
 
     return comparison;
 }
@@ -111,6 +119,9 @@ int main() {
     }
 
     isMagic(rows, magicSqu);
+
+    free(magicSqu);
+    magicSqu = NULL;
 
     return 0;
 }
