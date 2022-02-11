@@ -7,14 +7,47 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
-int calculateArr(int num, int ** magicSqu){
+bool calcColArr(int num, int ** magicSqu, int * colSum){
     int * calcArr;
-    int comparison;
+    bool comparison = true;
 
     calcArr = (int *) malloc(sizeof(int)*num);
 
-    // should I fill rowsArr with 0's?
+    //fill with 0's
+    memset(calcArr, 0, sizeof(int)*num);
+
+    for (int i = 0; i < num; i++){
+        for (int j = 0; j < num; j++){
+            calcArr[i] += magicSqu[j][i];
+        }
+    }
+
+    for (int i = 1; i < num; i++){
+        if (calcArr[i] != calcArr[0]){
+            comparison = false;
+            break;
+        }
+    }
+
+    *colSum = calcArr[0];
+
+    free(calcArr);
+    calcArr = NULL;
+
+    return comparison;
+}
+
+bool calcRowArr(int num, int ** magicSqu, int * rowSum){
+    int * calcArr;
+    bool comparison = true;
+
+    calcArr = (int *) malloc(sizeof(int)*num);
+
+    //fill with 0's
+    memset(calcArr, 0, sizeof(int)*num);
 
     for (int i = 0; i < num; i++){
         for (int j = 0; j < num; j++){
@@ -25,10 +58,13 @@ int calculateArr(int num, int ** magicSqu){
     comparison = calcArr[0];
 
     for (int i = 1; i < num; i++){
-        if (calcArr[i] != comparison){
-            comparison = 0;
+        if (calcArr[i] != calcArr[0]){
+            comparison = false;
+            break;
         }
     }
+
+    *rowSum = calcArr[0];
 
     free(calcArr);
     calcArr = NULL;
@@ -36,14 +72,15 @@ int calculateArr(int num, int ** magicSqu){
     return comparison;
 }
 
-int calculateDiag(int num, int ** magicSqu){
+bool calculateDiag(int num, int ** magicSqu, int * diagSum){
     int * calcArr;
-    int comparison;
+    bool comparison = false;
     int counter = 0;
 
     calcArr = (int *) malloc(sizeof(int)*num);
 
-    // should I set stuff in array to zero?
+    //fill with 0's
+    memset(calcArr, 0, sizeof(int)*num);
 
     for (int i = 0; i < num; i++){
         for (int j = 0; j < num; j++){
@@ -62,8 +99,10 @@ int calculateDiag(int num, int ** magicSqu){
     }
 
     if (calcArr[0] == calcArr[1]){
-        comparison = calcArr[0];
+        comparison = true;
     }
+
+    *diagSum = calcArr[0];
 
     free(calcArr);
     calcArr = NULL;
@@ -72,16 +111,21 @@ int calculateDiag(int num, int ** magicSqu){
 }
 
 void isMagic(int num, int ** magicSqu){
+    int rowSum = 0;
+    int colSum = 0;
+    int diagSum = 0;
 
     //calculate row, column, and diagonals
 
-    int row = calculateArr(num, magicSqu);
-    int col = calculateArr(num, magicSqu);
-    int diag = calculateDiag(num, magicSqu);
+    bool row = calcRowArr(num, magicSqu, &rowSum);
+    bool col = calcColArr(num, magicSqu, &colSum);
+    bool diag = calculateDiag(num, magicSqu, &diagSum);
 
-    // check all outputs same
-    if (row == col && row == diag) {
-        printf("\nM is a magic square (magic constant = %d)", row);
+    if ((row == true && col == true && diag == true) &&
+            (rowSum == colSum && rowSum == diagSum)){
+
+        printf("\nM is a magic square (magic constant = %d)", rowSum);
+
     } else {
         printf("\nM is NOT a magic square!");
     }
@@ -94,7 +138,6 @@ int main() {
     int ** magicSqu;
 
     scanf("%d %d", &rows, &cols);
-    printf("rows: %d, cols: %d", rows, cols);
 
     // malloc array
     magicSqu = (int**) malloc(sizeof(int*)*rows);
@@ -106,15 +149,6 @@ int main() {
         for (int j = 0; j < cols; j++){
             scanf("%d", &num);
             magicSqu[i][j] = num;
-        }
-    }
-
-    // printing out matrix
-    for (int i = 0; i < rows; i++){
-        printf("\n");
-        for (int j = 0; j < cols; j++){
-            printf("%d ", magicSqu[i][j]);
-            // initialize using ex
         }
     }
 
