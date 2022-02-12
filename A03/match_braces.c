@@ -146,6 +146,8 @@ int main(int argc, char* argv[]) {
         top = next;
     }
 
+    fclose(file);
+
     // I think linked list is already cleared but calling just in case
     clear(top);
     top = NULL;
