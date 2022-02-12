@@ -22,7 +22,7 @@ void printSnacks(struct snack* snacks){
     struct snack* current = snacks;
 
     while(current != NULL){
-        printf("\n%d) %s \t\t cost: %0.02f \t quantity: %d", counter, current->name, current->cost, current->quantity);
+        printf("\n%d) %s \t\t cost: $%0.02f \t quantity: %d", counter, current->name, current->cost, current->quantity);
         counter++;
         current = current->next;
     }
@@ -120,6 +120,7 @@ int main() {
     printSnacks(list);
 
     clear(list);
+    list = NULL;
 
     return 0;
 }
