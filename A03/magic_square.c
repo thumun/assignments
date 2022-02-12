@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+// calculating sum columns-wise
 bool calcColArr(int num, int ** magicSqu, int * colSum){
     int * calcArr;
     bool comparison = true;
@@ -32,6 +33,7 @@ bool calcColArr(int num, int ** magicSqu, int * colSum){
         }
     }
 
+    // gets the sum for columns
     *colSum = calcArr[0];
 
     free(calcArr);
@@ -40,6 +42,7 @@ bool calcColArr(int num, int ** magicSqu, int * colSum){
     return comparison;
 }
 
+// calculating sum rows-wise
 bool calcRowArr(int num, int ** magicSqu, int * rowSum){
     int * calcArr;
     bool comparison = true;
@@ -64,6 +67,7 @@ bool calcRowArr(int num, int ** magicSqu, int * rowSum){
         }
     }
 
+    // gets sum row-wise
     *rowSum = calcArr[0];
 
     free(calcArr);
@@ -72,16 +76,18 @@ bool calcRowArr(int num, int ** magicSqu, int * rowSum){
     return comparison;
 }
 
+// calcs sum for diagonals
 bool calculateDiag(int num, int ** magicSqu, int * diagSum){
     int * calcArr;
     bool comparison = false;
-    int counter = 0;
+    int counter = 0; // counter for getting nums to compare diag sums
 
     calcArr = (int *) malloc(sizeof(int)*num);
 
     //fill with 0's
     memset(calcArr, 0, sizeof(int)*num);
 
+    // left to right diag
     for (int i = 0; i < num; i++){
         for (int j = 0; j < num; j++){
             if (i == j){
@@ -92,6 +98,7 @@ bool calculateDiag(int num, int ** magicSqu, int * diagSum){
 
     counter+=1;
 
+    // right to left diag
     int rowIndx = 0;
     for (int j = num-1; j >= 0; j--){
         calcArr[counter] += magicSqu[rowIndx][j];
@@ -121,6 +128,7 @@ void isMagic(int num, int ** magicSqu){
     bool col = calcColArr(num, magicSqu, &colSum);
     bool diag = calculateDiag(num, magicSqu, &diagSum);
 
+    // seeing if sums same among individual rows/cols/diags & sums same when compared
     if ((row == true && col == true && diag == true) &&
             (rowSum == colSum && rowSum == diagSum)){
 

@@ -2,7 +2,7 @@
 // sorted_snackbar.c 
 // CS223 - Spring 2022
 // Ask the user for a list of snacks and store them in alphabetical order
-// Name:
+// Name: Neha Thumu
 //
 #include <stdio.h>
 #include <stdlib.h>
