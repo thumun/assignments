@@ -2,32 +2,33 @@
 #include <stdio.h>
 #include <string.h>
 
-void makeBorder(char * userInp, char * symbol){
+void makeBorder(char * userInp, char symbol){
     int lenStr = strlen(userInp);
     lenStr+= 4;
 
     for (int i = 0; i < lenStr; i++){
-        printf("%s", symbol);
+        printf("%c", symbol);
     }
     printf("\n");
 
-    printf("%s %s %s\n", symbol, userInp, symbol);
+    printf("%c %s %c\n", symbol, userInp, symbol);
 
     for (int i = 0; i < lenStr; i++){
-        printf("%s", symbol);
+        printf("%c", symbol);
     }
     printf("\n");
 }
 
+
 int main(){
     char userInp [50];
-    char symbol [32];
+    char symbol;
 
     printf("Please enter a word: ");
     scanf("%s", userInp);
 
     printf("Please enter a symbol: ");
-    scanf("%s", symbol);
+    scanf(" %c", &symbol);
 
     makeBorder(userInp, symbol);
 
