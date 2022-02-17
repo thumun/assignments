@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "read_ppm.h"
 #include <string.h>
 
@@ -36,6 +37,10 @@ int main(int argc, char* argv[]) {
     printf("Testing file %s: %d %d\n", filename, width, height);
 
     printArr(arrPx, width, height);
+
+    // CHECK IF THIS WORKS !
+    free(arrPx);
+    arrPx = NULL;
 
   return 0;
 }
