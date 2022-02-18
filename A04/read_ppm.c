@@ -29,14 +29,15 @@ void lineParser(char * line, int * returnNum){
     }
 }
 
-// TODO: Implement this function
-// Feel free to change the function signature if you prefer to implement an 
+// Feel free to change the function signature if you prefer to implement an
 // array of arrays
 struct ppm_pixel** read_ppm(const char* filename, int* w, int* h) {
     FILE * file;
-    char line[100];
+    char line[1024];
     struct ppm_pixel ** arrPx;
     int * returnNum = (int*) malloc(sizeof(int)*(*w * 3));
+
+    char magicNum[3];
 
     file = fopen(filename, "r");
 
@@ -46,36 +47,61 @@ struct ppm_pixel** read_ppm(const char* filename, int* w, int* h) {
         return NULL;
     }
 
-    int lineCount = 0;
-
-    while (fgets(line, sizeof(line), file) != NULL) {
-        if (line[0] == 'P' || line[0] == '#'){ // change to comp with P3
+    while (strncmp(fgets(line, sizeof(line), file), "255", 3) != 0) {
+        if (line[0] == 'P'){
+            strncpy(magicNum, line, 2);
+        } else if (line[0] == '#' || line[0] == ' '){
             continue;
-        }
-
-        if (lineCount == 0){
+        } else {
             *w = atoi(&line[0]);
             *h = atoi(&line[2]);
 
+        }
+    }
+
+    arrPx = (struct ppm_pixel **) malloc(sizeof (struct ppm_pixel*)* *h);
+    for(int i = 0; i < *h; i++) {
+        arrPx[i] = (struct ppm_pixel *) malloc(sizeof(struct ppm_pixel)* *w);
+    }
+
+    // go through it
+    // every three as rgb
+    for (int j = 0; j < *h; j++){
+        for (int i = 0; i < *w; i++){
+            fscanf(file, "%hhu %hhu %hhu", &arrPx[j][i].red, &arrPx[j][i].green,
+                   &arrPx[j][i].blue);
+
+        }
+    }
+
+
+//    while (fgets(line, sizeof(line), file) != NULL) {
+//        if (line[0] == 'P' || line[0] == '#'){ // change to comp with P3
+//            continue;
+//        }
+//
+//        if (lineCount == 0){
+//            *w = atoi(&line[0]);
+//            *h = atoi(&line[2]);
+//
 //            printf("width: %d\n", *w);
 //            printf("height: %d\n", *h);
-        } else if (lineCount == 1){ // skipping 255
-            arrPx = (struct ppm_pixel **) malloc(sizeof (struct ppm_pixel*)* *h);
-            for(int i = 0; i < *w; i++) {
-                arrPx[i] = (struct ppm_pixel *) malloc(sizeof(struct ppm_pixel)* *w);
-            }
-        } else {
-            lineParser(line, returnNum);
-            for (int i = 0; i < *w; i++) {
-                arrPx[lineCount-2][i].red = (unsigned char)returnNum[i*3];
-                arrPx[lineCount-2][i].green = (unsigned char)returnNum[i*3 + 1];
-                arrPx[lineCount-2][i].blue = (unsigned char)returnNum[i*3 + 2];
-
-            }
-        }
-
-        lineCount++;
-    }
+//        } else if (lineCount == 1){ // skipping 255
+//            arrPx = (struct ppm_pixel **) malloc(sizeof (struct ppm_pixel*)* *h);
+//            for(int i = 0; i < *w; i++) {
+//                arrPx[i] = (struct ppm_pixel *) malloc(sizeof(struct ppm_pixel)* *w);
+//            }
+//        } else {
+//            lineParser(line, returnNum);
+//            for (int i = 0; i < *w; i++) {
+//                arrPx[lineCount-2][i].red = (unsigned char)returnNum[i*3];
+//                arrPx[lineCount-2][i].green = (unsigned char)returnNum[i*3 + 1];
+//                arrPx[lineCount-2][i].blue = (unsigned char)returnNum[i*3 + 2];
+//            }
+//        }
+//
+//        lineCount++;
+//    }
 
     // CHECK DEALLOCATION
 
