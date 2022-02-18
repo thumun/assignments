@@ -14,25 +14,27 @@ void printArr(struct ppm_pixel ** arrPx, int w, int h){
 }
 
 // changed inputs so ca =n test with other ascii files
-int main(int argc, char* argv[]) {
+int main() {
     // todo: call read_ppm
 
-    char * filename;
+    char filename[32];
     int width;
     int height;
 
     struct ppm_pixel ** arrPx;
 
     // input checker
-    if (argc != 2){
-        printf("usage:");
-        for (int i = 0; i < argc; i++){
-            printf(" %s", argv[i]);
-        }
-        return 1;
-    }
+//    if (argc != 2){
+//        printf("usage:");
+//        for (int i = 0; i < argc; i++){
+//            printf(" %s", argv[i]);
+//        }
+//        return 1;
+//    }
 
-    filename = argv[1];
+    //filename = argv[1];
+
+    strcpy(filename, "feep-ascii.ppm");
 
     arrPx = read_ppm(filename, &width, &height);
 
