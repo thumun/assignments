@@ -62,8 +62,23 @@ int main(int argc, char** argv) {
 
     // check this!!
     outputArr = (char **) malloc(sizeof (char*)* height);
+
+    if (outputArr == NULL){
+        printf("Malloc failed");
+        return 1;
+    }
+
     for(int i = 0; i < height; i++) {
         outputArr[i] = (char *) malloc(sizeof(char)*width);
+
+        if (outputArr[i] == NULL){
+            printf("Malloc failed");
+
+            for (int j = 0; j < i; j++){
+                free(outputArr[j]);
+            }
+            return 1;
+        }
     }
 
     float intensity;

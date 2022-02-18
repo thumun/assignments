@@ -59,8 +59,26 @@ struct ppm_pixel** read_ppm(const char* filename, int* w, int* h) {
     }
 
     arrPx = (struct ppm_pixel **) malloc(sizeof (struct ppm_pixel*)* *h);
+
+    if (arrPx == NULL){
+        fclose(file);
+        return NULL;
+    }
+
     for(int i = 0; i < *h; i++) {
         arrPx[i] = (struct ppm_pixel *) malloc(sizeof(struct ppm_pixel)* *w);
+
+        if (arrPx[i] == NULL){
+            fclose(file);
+
+            for (int j = 0; j < i; j++){
+                free(arrPx[j]);
+            }
+            free(arrPx);
+            arrPx = NULL;
+
+            return NULL;
+        }
     }
 
     // go through it
