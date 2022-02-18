@@ -68,8 +68,8 @@ int main(int argc, char** argv) {
 
     float intensity;
 
-    for (int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++){
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
             intensity = (arrPx[i][j].red + arrPx[i][j].green + arrPx[i][j].blue);
             intensity = intensity / 3;
             temp = terribleMethod(intensity);
