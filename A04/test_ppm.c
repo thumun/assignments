@@ -39,6 +39,11 @@ int main(int argc, char* argv[]) {
     printArr(arrPx, width, height);
 
     // CHECK IF THIS WORKS !
+
+    for(int i = 0; i < height; i++) {
+        free(arrPx[i]);
+    }
+
     free(arrPx);
     arrPx = NULL;
 

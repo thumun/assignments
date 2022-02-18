@@ -79,9 +79,17 @@ int main(int argc, char** argv) {
 
     printArr(outputArr, width, height);
 
+    for(int i = 0; i < height; i++) {
+        free(arrPx[i]);
+    }
+
     free(arrPx);
-    free(outputArr);
     arrPx = NULL;
+
+    for(int i = 0; i < height; i++) {
+        free(outputArr[i]);
+    }
+    free(outputArr);
     outputArr = NULL;
 
     return 0;
