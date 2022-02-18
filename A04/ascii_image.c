@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "read_ppm.h"
 
+// printing the items in array (print characters)
 void printArr(char ** arr, int w, int h){
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
@@ -11,7 +12,8 @@ void printArr(char ** arr, int w, int h){
     }
 }
 
-char * terribleMethod(float intensity){
+// setting a character for intensity input
+char * charSet(float intensity){
 
     if (intensity <= 255.0 && intensity > 225.0){
         return (" ");
@@ -42,9 +44,7 @@ int main(int argc, char** argv) {
     int height;
 
     struct ppm_pixel ** arrPx;
-
     char ** outputArr;
-
     char * temp;
 
     // input checker - change
@@ -83,17 +83,19 @@ int main(int argc, char** argv) {
 
     float intensity;
 
+    // getting intensity for each pixel
     for (int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
             intensity = (arrPx[i][j].red + arrPx[i][j].green + arrPx[i][j].blue);
             intensity = intensity / 3;
-            temp = terribleMethod(intensity);
+            temp = charSet(intensity);
             outputArr[i][j] = *temp;
         }
     }
 
     printArr(outputArr, width, height);
 
+    // deallocating
     for(int i = 0; i < height; i++) {
         free(arrPx[i]);
     }

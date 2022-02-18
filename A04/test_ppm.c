@@ -3,6 +3,7 @@
 #include "read_ppm.h"
 #include <string.h>
 
+// printing items in array (r, g, b values for each pixel)
 void printArr(struct ppm_pixel ** arrPx, int w, int h){
     for (int i = 0; i < h; i++){
         for (int j = 0; j < w; j++){
@@ -12,6 +13,7 @@ void printArr(struct ppm_pixel ** arrPx, int w, int h){
     }
 }
 
+// changed inputs so ca =n test with other ascii files
 int main(int argc, char* argv[]) {
     // todo: call read_ppm
 
@@ -21,7 +23,7 @@ int main(int argc, char* argv[]) {
 
     struct ppm_pixel ** arrPx;
 
-    // input checker - change
+    // input checker
     if (argc != 2){
         printf("usage:");
         for (int i = 0; i < argc; i++){
@@ -38,8 +40,7 @@ int main(int argc, char* argv[]) {
 
     printArr(arrPx, width, height);
 
-    // CHECK IF THIS WORKS !
-
+    // deallocating
     for(int i = 0; i < height; i++) {
         free(arrPx[i]);
     }
