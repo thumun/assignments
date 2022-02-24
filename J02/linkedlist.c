@@ -8,8 +8,6 @@ struct cake {
 };
 
 void printNodes(struct cake* list){
-    float costcheap = list->cost;
-    char cake [16];
 
     struct cake* current = list;
 
@@ -20,18 +18,42 @@ void printNodes(struct cake* list){
 
     }
 
-    struct cake* a = list;
+//    struct cake* a = list;
+//
+//    while(a != NULL){
+//        if (costcheap < a->cost){
+//            costcheap = a->cost;
+//            strcpy(cake, a->flavor);
+//            printf("test cost: %f, %s\n", costcheap, cake);
+//        }
+//
+//        a = a->next;
+//
+//    }
+}
 
-    while(a != NULL){
-        if (costcheap < a->cost){
-            costcheap = a->cost;
-            strcpy(cake, a->flavor);
-            printf("test cost: %f, %s\n", costcheap, cake);
+char * findCheapest(struct cake* list){
+    struct cake* current = list;
+    struct cake* next = current->next;
+
+    float cost = list->cost;
+
+    char * cakeName = NULL;
+
+
+    //float * prices = (float *)malloc(sizeOf(float)*15);
+
+    while(next!=NULL){
+        if (cost > current->cost){
+            cost = current->cost;
+            strcpy(cakeName, current->flavor);
         }
 
-        a = a->next;
-
+        current = next;
+        next = next->next;
     }
+
+    return cakeName;
 }
 
 struct cake makeCake(const char* flavor, float cost) {
@@ -58,6 +80,11 @@ int main() {
   // draw stack and heap here
 
     printNodes(&cake1);
+
+    char cakeName[32];
+
+    strcpy(cakeName, findCheapest(&cake1));
+    printf("cheapest cake is: %s", cakeName);
 
   // todo: call cheapestCake
 }
