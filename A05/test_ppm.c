@@ -33,14 +33,24 @@ int main(int argc, char** argv) {
 //    ((unsigned char*)&pixel)[0] = 150;
 //    printf(" pixel after %d\n", pixel.red);
 
-    char filename[32];
+    char * filename;
     int width;
     int height;
 
     struct ppm_pixel * arrPx;
 
+    // input checker - change
+    if (argc != 2){
+        printf("usage:");
+        for (int i = 0; i < argc; i++){
+            printf(" %s", argv[i]);
+        }
+        return 1;
+    }
 
-    strcpy(filename, "feep-raw.ppm");
+    filename = argv[1];
+
+    //strcpy(filename, "feep-raw.ppm");
 
     arrPx = read_ppm(filename, &width, &height);
     printArr(arrPx, width, height);
