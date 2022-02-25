@@ -56,8 +56,6 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h)
 
     FILE * fp = NULL;
 
-    printf("filename: %s\n", filename);
-
     // basic bit shift (with rand)
 //    for (int i = 0; i < w*h; i++){
 //        pxs[i].red = pxs[i].red << rand()%2;

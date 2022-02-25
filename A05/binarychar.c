@@ -17,6 +17,6 @@ int main() {
 
     }
 
-    printf("Your character is: %c", output);
+    printf("Your character is: %c\n", output);
     return 0;
 }

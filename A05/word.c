@@ -26,7 +26,7 @@ int main() {
 
     convertToInt(usrInput, &outputVal);
 
-    printf("Your number is: %d (0x%08X)", outputVal, outputVal);
+    printf("Your number is: %d (0x%08X)\n", outputVal, outputVal);
 
     return 0;
 }
