@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 
     struct ppm_pixel * arrPx;
 
-    // input checker - change
+    // input checker
     if (argc != 2){
         printf("usage:");
         for (int i = 0; i < argc; i++){
@@ -23,22 +23,21 @@ int main(int argc, char** argv) {
 
     filename = argv[1];
 
-    //strcpy(filename, "feep-raw.ppm");
 
+    // reading the file & getting pixel data as array
     arrPx = read_ppm(filename, &width, &height);
-
     printf("Reading %s with width %d and height %d\n", filename, width, height);
 
-
+    // making new filename from old one
     strncpy(newFilename, filename, strlen(filename)-4);
     newFilename[strlen(filename)-4] = '\0';
-
     strcat(newFilename, "-glitch.ppm");
 
+    // adding glitch effect & writing to new file
     write_ppm(newFilename, arrPx, width, height);
-
     printf("Writing file %s\n", newFilename);
 
+    // free-ing stuff
     free(arrPx);
     arrPx = NULL;
 

@@ -3,7 +3,6 @@
 #include <string.h>
 #include "read_ppm.h"
 
-// TODO: Implement this function
 // Feel free to change the function signature if you prefer to implement an 
 // array of arrays
 struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
@@ -30,11 +29,7 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
             continue;
         } else {
             // getting & setting width & height
-
             sscanf(line, "%d %d", w, h);
-
-//            *w = atoi(&line[0]);
-//            *h = atoi(&line[2]);
 
         }
     }
@@ -46,6 +41,7 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
         return NULL;
     }
 
+    // reading stuff in file & putting them as ppm_pixel in the array
     fread(arrPx, sizeof(struct ppm_pixel), *h * *w, file);
 
     fclose(file);
@@ -54,7 +50,6 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
     return arrPx;
 }
 
-// TODO: Implement this function
 // Feel free to change the function signature if you prefer to implement an 
 // array of arrays
 extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h) {
@@ -63,7 +58,7 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h)
 
     printf("filename: %s\n", filename);
 
-    // basic bit shift (rand)
+    // basic bit shift (with rand)
 //    for (int i = 0; i < w*h; i++){
 //        pxs[i].red = pxs[i].red << rand()%2;
 //        pxs[i].blue = pxs[i].blue << rand()%2;
@@ -86,19 +81,18 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h)
 
     }
 
-
-
+    // file that's being written to
     fp = fopen(filename, "w+");
 
+    // adding header info
     fputs("P6\n", fp);
     fprintf(fp, "%d %d\n", w, h);
     fputs("255\n", fp);
 
     fclose(fp);
 
+    // opening up file again to add glitched pixel info
     fp = fopen(filename, "ab"); // writing to file
-
-    //strcat(newFilename, "-glitch.ppm");
 
     fwrite(pxs, sizeof(struct ppm_pixel), h * w, fp);
 

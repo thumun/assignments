@@ -6,10 +6,12 @@ void convertToInt(char * usrInput, unsigned int * outputVal){
 
     for (int i = strlen(usrInput)-1; i >= 0; i--){
 
+        // bit shifts a character in word
         temp = (unsigned int)(usrInput[i] << (strlen(usrInput)-1 - i)*8);
 
         printf("Debug: %c = 0x%08X \n", usrInput[i], temp);
 
+        // through OR, 'adding' all the chars to output val
         *outputVal = *outputVal | temp;
     }
 }
@@ -17,7 +19,7 @@ void convertToInt(char * usrInput, unsigned int * outputVal){
 int main() {
     unsigned int outputVal = 0;
 
-    char usrInput[5]; // gotta add null termination?
+    char usrInput[5];
 
     printf("Enter 4 characters: ");
     scanf("%s", usrInput);
