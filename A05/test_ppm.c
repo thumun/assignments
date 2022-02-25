@@ -56,7 +56,8 @@ int main(int argc, char** argv) {
     printArr(arrPx, width, height);
 
     free(arrPx);
+    arrPx = NULL;
 
-  return 0;
+    return 0;
 }
 

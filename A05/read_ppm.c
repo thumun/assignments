@@ -30,8 +30,11 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
             continue;
         } else {
             // getting & setting width & height
-            *w = atoi(&line[0]);
-            *h = atoi(&line[2]);
+
+            sscanf(line, "%d %d", w, h);
+
+//            *w = atoi(&line[0]);
+//            *h = atoi(&line[2]);
 
         }
     }
@@ -46,7 +49,7 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
     fread(arrPx, sizeof(struct ppm_pixel), *h * *w, file);
 
     fclose(file);
-
+    file = NULL;
 
     return arrPx;
 }
@@ -55,5 +58,50 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
 // Feel free to change the function signature if you prefer to implement an 
 // array of arrays
 extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h) {
+
+    FILE * fp = NULL;
+
+    printf("filename: %s\n", filename);
+
+    // basic bit shift (rand)
+//    for (int i = 0; i < w*h; i++){
+//        pxs[i].red = pxs[i].red << rand()%2;
+//        pxs[i].blue = pxs[i].blue << rand()%2;
+//        pxs[i].green = pxs[i].green << rand()%2;
+//
+//    }
+
+ //half and half
+    for (int i = 0; i < (w*h)/2; i++){
+        pxs[i].red = pxs[i].red << rand()%2;
+        pxs[i].blue = pxs[i].blue << rand()%2;
+        pxs[i].green = pxs[i].green << (rand()%2)/8;
+
+    }
+
+    for (int i = (w*h)/2; i < w*h; i++){
+        pxs[i].red = pxs[i].red << rand()%2;
+        pxs[i].blue = pxs[i].blue << 2*rand()%2;
+        pxs[i].green = pxs[i].green << rand()%2;
+
+    }
+
+
+
+    fp = fopen(filename, "w+");
+
+    fputs("P6\n", fp);
+    fprintf(fp, "%d %d\n", w, h);
+    fputs("255\n", fp);
+
+    fclose(fp);
+
+    fp = fopen(filename, "ab"); // writing to file
+
+    //strcat(newFilename, "-glitch.ppm");
+
+    fwrite(pxs, sizeof(struct ppm_pixel), h * w, fp);
+
+    fclose(fp);
 
 }
