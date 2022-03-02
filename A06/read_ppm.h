@@ -13,7 +13,7 @@ struct ppm_pixel {
 };
 
 extern struct ppm_pixel* read_ppm(const char* filename, int* w, int* h);
-extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h);
+extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h, const char * message);
 
 #endif
 

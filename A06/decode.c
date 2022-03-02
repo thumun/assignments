@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 
     // testing output
     printf("Reading %s.ppm with width %d and height %d\n", filename, width, height);
-    printf("Max number of characters in the image: %lu\n", strlen(numChar)/8);
+    printf("Max number of characters in the image: %d\n", (width*height*3)/8);
 
     // logic for printing the message
     for (int i = 0; i < strlen(numChar); i++){
