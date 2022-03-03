@@ -85,7 +85,9 @@ int main(int argc, char** argv) {
 
     // free-ing
     free(arrPx);
+    free(usrPhrase);
     arrPx = NULL;
+    usrPhrase = NULL;
 
     return 0;
 }
