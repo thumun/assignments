@@ -6,6 +6,7 @@
 // getting the least significant bit of each rgb val via modulus 2
 void getBits(struct ppm_pixel * arrPx, int w, int h, char * numChar){
 
+    // using mod to see if even or odd
     for (int i = 0; i < w*h; i++){
         if (arrPx[i].red % 2 == 0){
             numChar[i*3] = '0';

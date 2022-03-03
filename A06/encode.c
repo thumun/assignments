@@ -12,21 +12,26 @@ void charToBin(char letter, unsigned char * buffer){
 
 void encodingMsg(struct ppm_pixel* pxs, int w, int h, const char * message){
 
+    // allocating space for adding message in binary format
     unsigned char * msgBin = malloc(sizeof(message+1)*8);
     memset(msgBin, 0, sizeof(message+1)*8);
 
+    // getting binary for each letter of the user input (message)
     for (int i = 0; i < strlen(message); i++){
         charToBin(message[i], &msgBin[i*8]);
     }
 
     char mask = 0xfe;
 
+    // AND w/ mask in order to make the least significant bit always 0
+    // OR w/ msgBin in order to set this least significant bit to the desired val
     for (int i = 0; i < w*h; i++){
         pxs[i].red = (pxs[i].red & mask) | msgBin[i*3];
         pxs[i].green = (pxs[i].green & mask) | msgBin[i*3+1];
         pxs[i].blue = (pxs[i].blue & mask) | msgBin[i*3+2];
     }
 
+    // free-ing
     free(msgBin);
     msgBin = NULL;
 }
@@ -56,13 +61,13 @@ int main(int argc, char** argv) {
     // reading data as array of pixels
     arrPx = read_ppm(filename, &width, &height);
 
-    char * numChar = malloc(sizeof(char)*width*height*3 + 10);
-
     // testing output
     printf("Reading %s.ppm with width %d and height %d\n", filename, width, height);
     printf("Max number of characters in the image: %d\n", (width*height*3)/8);
 
+    // malloc'ing the space based on max num of char in image
     usrPhrase = malloc(sizeof(char)*(width*height*3)/8);
+
     printf("Enter a phrase: ");
     scanf("%s", usrPhrase);
 
@@ -80,9 +85,7 @@ int main(int argc, char** argv) {
 
     // free-ing
     free(arrPx);
-    free(numChar);
     arrPx = NULL;
-    numChar = NULL;
 
     return 0;
 }
