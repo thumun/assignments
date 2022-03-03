@@ -56,29 +56,6 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h)
 
     FILE * fp = NULL;
 
-    // basic bit shift (with rand)
-//    for (int i = 0; i < w*h; i++){
-//        pxs[i].red = pxs[i].red << rand()%2;
-//        pxs[i].blue = pxs[i].blue << rand()%2;
-//        pxs[i].green = pxs[i].green << rand()%2;
-//
-//    }
-
- //half and half
-//    for (int i = 0; i < (w*h)/2; i++){
-//        pxs[i].red = pxs[i].red << rand()%2;
-//        pxs[i].blue = pxs[i].blue << rand()%2;
-//        pxs[i].green = pxs[i].green << (rand()%2)/8;
-//
-//    }
-//
-//    for (int i = (w*h)/2; i < w*h; i++){
-//        pxs[i].red = pxs[i].red << rand()%2;
-//        pxs[i].blue = pxs[i].blue << 2*rand()%2;
-//        pxs[i].green = pxs[i].green << rand()%2;
-//
-//    }
-
     // file that's being written to
     fp = fopen(filename, "w+");
 

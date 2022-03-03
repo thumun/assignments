@@ -3,6 +3,7 @@
 #include <string.h>
 #include "read_ppm.h"
 
+// editing array to add glitch
 void addGlitch(struct ppm_pixel* pxs, int w, int h){
     // basic bit shift (with rand)
 //    for (int i = 0; i < w*h; i++){
