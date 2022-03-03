@@ -72,46 +72,12 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
     return arrPx;
 }
 
-void charToBin(char letter, unsigned char * buffer){
-    for (int i = 0; i < 8; i++){
-        // gets each bit from the letter into a buffer via bit shifting & a mask
-        buffer[i] = letter >> (7-i) & 0x01;
-        //printf("%d", letter >> (7-i) & 0x01);
-    }
-}
-
 // TODO: Implement this function
 // Feel free to change the function signature if you prefer to implement an 
 // array of arrays
-extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h, const char * message) {
+extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h) {
 
     FILE * fp = NULL;
-
-    unsigned char * msgBin = malloc(sizeof(message+1)*8);
-    memset(msgBin, 0, sizeof(message+1)*8);
-
-    for (int i = 0; i < strlen(message); i++){
-        charToBin(message[i], &msgBin[i*8]);
-
-//        for (int j = 0; j < 8; j++){
-//            printf("%d", msgBin[i*8 +j]);
-//        }
-//        printf("\n");
-}
-
-    for (int i = 0; i < w*h; i++){
-
-        char mask = 0xfe;
-
-        pxs[i].red = (pxs[i].red & mask) | msgBin[i*3];
-        pxs[i].blue = (pxs[i].blue & mask) | msgBin[i*3+1];
-        pxs[i].green = (pxs[i].green & mask) | msgBin[i*3+2];
-
-//        pxs[i].red = pxs[i].red | msgBin[i*3];
-//        pxs[i].blue = pxs[i].blue | msgBin[i*3+1];
-//        pxs[i].green = pxs[i].green | msgBin[i*3+2];
-
-    }
 
     // file that's being written to
     fp = fopen(filename, "w+");
@@ -129,9 +95,6 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h,
     fwrite(pxs, sizeof(struct ppm_pixel), h * w, fp);
 
     fclose(fp);
-    free(msgBin);
-
-    msgBin = NULL;
     fp=NULL;
 
 }
