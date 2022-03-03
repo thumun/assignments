@@ -97,14 +97,21 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h,
 //            printf("%d", msgBin[i*8 +j]);
 //        }
 //        printf("\n");
-    }
+}
 
-//    for (int i = 0; i < w*h; i++){
+    for (int i = 0; i < w*h; i++){
+
+        char mask = 0xfe;
+
+        pxs[i].red = (pxs[i].red & mask) | msgBin[i*3];
+        pxs[i].blue = (pxs[i].blue & mask) | msgBin[i*3+1];
+        pxs[i].green = (pxs[i].green & mask) | msgBin[i*3+2];
+
 //        pxs[i].red = pxs[i].red | msgBin[i*3];
 //        pxs[i].blue = pxs[i].blue | msgBin[i*3+1];
 //        pxs[i].green = pxs[i].green | msgBin[i*3+2];
-//
-//    }
+
+    }
 
     // file that's being written to
     fp = fopen(filename, "w+");
