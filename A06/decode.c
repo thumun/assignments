@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
             strncpy(digits, &numChar[i], 8);
             digits[8] = '\0';
 
-            // as a note, found this handy function on stack overflow
+            // getting the binary format
             char temp = strtol(digits, 0, 2);
             printf("%c", temp);
 

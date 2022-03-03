@@ -76,6 +76,7 @@ void charToBin(char letter, unsigned char * buffer){
     for (int i = 0; i < 8; i++){
         // gets each bit from the letter into a buffer via bit shifting & a mask
         buffer[i] = letter >> (7-i) & 0x01;
+        //printf("%d", letter >> (7-i) & 0x01);
     }
 }
 
@@ -92,21 +93,18 @@ extern void write_ppm(const char* filename, struct ppm_pixel* pxs, int w, int h,
     for (int i = 0; i < strlen(message); i++){
         charToBin(message[i], &msgBin[i*8]);
 
-//        for (int i = 0; i < 8; i++){
-//            printf("%d", temp[i]);
+//        for (int j = 0; j < 8; j++){
+//            printf("%d", msgBin[i*8 +j]);
 //        }
 //        printf("\n");
     }
 
-    for (int i = 0; i < w*h; i++){
-        if ((i*3+2) > sizeof(message+1)*8){
-            break;
-        } else {
-            pxs[i].red = pxs[i].red | msgBin[i*3];
-            pxs[i].blue = pxs[i].blue | msgBin[i*3+1];
-            pxs[i].green = pxs[i].green | msgBin[i*3+2];
-        }
-    }
+//    for (int i = 0; i < w*h; i++){
+//        pxs[i].red = pxs[i].red | msgBin[i*3];
+//        pxs[i].blue = pxs[i].blue | msgBin[i*3+1];
+//        pxs[i].green = pxs[i].green | msgBin[i*3+2];
+//
+//    }
 
     // file that's being written to
     fp = fopen(filename, "w+");
