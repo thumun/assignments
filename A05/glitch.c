@@ -3,6 +3,30 @@
 #include <string.h>
 #include "read_ppm.h"
 
+void addGlitch(struct ppm_pixel* pxs, int w, int h){
+    // basic bit shift (with rand)
+//    for (int i = 0; i < w*h; i++){
+//        pxs[i].red = pxs[i].red << rand()%2;
+//        pxs[i].blue = pxs[i].blue << rand()%2;
+//        pxs[i].green = pxs[i].green << rand()%2;
+//
+//    }
+
+    //half and half
+    for (int i = 0; i < (w*h)/2; i++){
+        pxs[i].red = pxs[i].red << rand()%2;
+        pxs[i].blue = pxs[i].blue << rand()%2;
+        pxs[i].green = pxs[i].green << (rand()%2)/8;
+
+    }
+
+    for (int i = (w*h)/2; i < w*h; i++){
+        pxs[i].red = pxs[i].red << rand()%2;
+        pxs[i].blue = pxs[i].blue << 2*rand()%2;
+        pxs[i].green = pxs[i].green << rand()%2;
+
+    }
+}
 
 int main(int argc, char** argv) {
     char * filename;
@@ -33,7 +57,10 @@ int main(int argc, char** argv) {
     newFilename[strlen(filename)-4] = '\0';
     strcat(newFilename, "-glitch.ppm");
 
-    // adding glitch effect & writing to new file
+    // adding glithc
+    addGlitch(arrPx, width, height);
+
+    //writing to new file
     write_ppm(newFilename, arrPx, width, height);
     printf("Writing file %s\n", newFilename);
 
