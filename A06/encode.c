@@ -70,10 +70,6 @@ int main(int argc, char** argv) {
     printf("Enter a phrase: ");
     // now can read blank spaces
     scanf("%[^\n]%*c", usrPhrase);
-    //scanf("%s", usrPhrase);
-    //fgets(usrPhrase, sizeof(char)*(width*height*3)/8, stdin);
-
-    //printf("testing statement: %s", usrPhrase);
 
     // making new filename from old one
     strncpy(newFilename, filename, strlen(filename)-4);
