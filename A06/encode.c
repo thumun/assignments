@@ -11,7 +11,6 @@ void charToBin(char letter, unsigned char * buffer){
 }
 
 void encodingMsg(struct ppm_pixel* pxs, int w, int h, const char * message){
-
     // allocating space for adding message in binary format
     unsigned char * msgBin = malloc(sizeof(message+1)*8);
     memset(msgBin, 0, sizeof(message+1)*8);
@@ -69,7 +68,12 @@ int main(int argc, char** argv) {
     usrPhrase = malloc(sizeof(char)*(width*height*3)/8);
 
     printf("Enter a phrase: ");
-    scanf("%s", usrPhrase);
+    // now can read blank spaces
+    scanf("%[^\n]%*c", usrPhrase);
+    //scanf("%s", usrPhrase);
+    //fgets(usrPhrase, sizeof(char)*(width*height*3)/8, stdin);
+
+    //printf("testing statement: %s", usrPhrase);
 
     // making new filename from old one
     strncpy(newFilename, filename, strlen(filename)-4);
@@ -81,7 +85,7 @@ int main(int argc, char** argv) {
 
     // writing to new file
     write_ppm(newFilename, arrPx, width, height);
-    printf("\nWriting file %s", newFilename);
+    printf("Writing file %s", newFilename);
 
     // free-ing
     free(arrPx);
