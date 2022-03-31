@@ -15,7 +15,7 @@ int main (int argc, char* argv[]) {
     printf("The current top of the heap is %p", current);
 
     // check in bytes!!!
-    printf("Increased by %d (0x%0.3x) bytes", current-heapTop, current-heapTop);
+    printf("Increased by %ld (0x%0.3lx) bytes", current-heapTop, current-heapTop);
 
     return 0 ;
 }
