@@ -12,6 +12,7 @@ int main (int argc, char* argv[]) {
     for (int i = 0; i < 2000; i++){
         buff[i] = '.';
     }
+    buff[1998] = 'n';
     buff[1999] = '\0';
 
     printf("%s\n", buff);
