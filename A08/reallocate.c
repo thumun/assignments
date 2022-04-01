@@ -6,5 +6,9 @@
 
 int main (int argc, char* argv[]) {
 
+    for (int i = 0; i < 11; i++){
+        malloc(100);
+    }
+
   return 0 ;
 }
