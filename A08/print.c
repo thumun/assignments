@@ -8,7 +8,7 @@ int main (int argc, char* argv[]) {
 
     void* heapTop = sbrk(0);
 
-    printf("hi");
+    printf("hi\n");
     //printf("The initial top of the heap is %p\n", heapTop);
 
     void* current = sbrk(0);
@@ -16,7 +16,7 @@ int main (int argc, char* argv[]) {
     printf("The current top of the heap is %p\n", current);
 
     // check in bytes!!!
-    printf("Increased by %ld (0x%ld) bytes\n", current-heapTop, current-heapTop);
+    printf("Increased by %ld (0x%lx) bytes\n", current-heapTop, current-heapTop);
 
     return 0 ;
 }
