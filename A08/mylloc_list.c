@@ -4,6 +4,7 @@
 
 struct chunk {
   int size;
+  //int memUse;
   struct chunk *next;
 };
 
@@ -61,5 +62,6 @@ void free(void *memory) {
 
 // figure out what goes here
 void fragstats(void* buffers[], int len) {
+
 }
 
