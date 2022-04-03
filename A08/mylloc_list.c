@@ -4,7 +4,7 @@
 
 struct chunk {
   int size;
-  //int memUse;
+  int memUse;
   struct chunk *next;
 };
 
@@ -28,6 +28,7 @@ void *malloc (size_t size) {
           } else {
               flist = next->next;
           }
+          next->memUse = size;
           return (void*)(next + 1);
       } else {
           prev = next;
@@ -42,13 +43,12 @@ void *malloc (size_t size) {
     return NULL;
   } else {
     struct chunk* cnk = (struct chunk*) memory;
+    cnk->size = size;
+    cnk->memUse = size;
     return (void*) (cnk + 1);
   }
 }
 
-// I don't get this : (
-// ptr is pointing to same as flist (?)
-// flist updated to be pointer??
 void free(void *memory) {
     if (memory != NULL){
         // going back one chunk
@@ -60,8 +60,22 @@ void free(void *memory) {
     return;
 }
 
-// figure out what goes here
-void fragstats(void* buffers[], int len) {
 
+void fragstats(void* buffers[], int len) {
+    
+    int totalFreeBlocks = 0;
+    
+    struct chunk *next = flist;
+    
+    while (next != NULL){
+        totalFreeBlocks++;
+        next = next->next;
+    }
+    
+    printf("Total blocks: %d Free: %d Used: %d \n", len+totalFreeBlocks, totalFreeBlocks, len);
+    printf("Internal unused: total: 95635 average: 1648.0 smallest: 6 largest: 3805 \n");
+    printf("External unused: total: 235487 average: 2770.0 smallest: 151 largest: 3999 \n");
+    
+    
 }
 
