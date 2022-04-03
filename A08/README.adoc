@@ -52,19 +52,29 @@ In other words, there would be plenty of free space (but in smaller chunks) but 
 
 = Output
 
-./benchmark2 
+benchmark2 
 
 
 The initial top of the heap is 0x7f376b4f0000.
+
 Total blocks: 161 Free: 103 Used: 58 
+
 Internal unused: total: 178682 average: 3080.0 smallest: 511 largest: 3979 
+
 Internal unused: total: 103324 average: 1003.0 smallest: 0 largest: 3962 
+
 0
+
 The current top of the heap is 0x7f376b546527.
+
 Increased by 345 (0x159) Kbyte
+
 Total blocks: 167 Free: 113 Used: 54 
-Internal unused: total: 159454 average: 2952.0 smallest: 107 largest: 3991 
+
+Internal unused: total: 159454 average: 2952.0 smallest: 107 largest: 3991
+
 Internal unused: total: 135148 average: 1196.0 smallest: 0 largest: 3970 
+
 1
 The current top of the heap is 0x7f376b54c327.
 Increased by 368 (0x170) Kbyte
