@@ -52,7 +52,8 @@ In other words, there would be plenty of free space (but in smaller chunks) but 
 
 = Output
 
-benchmark2 
+benchmark2:
+
 
 
 The initial top of the heap is 0x7f376b4f0000.
