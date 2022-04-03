@@ -134,7 +134,7 @@ void fragstats(void* buffers[], int len) {
     
     
     
-    printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, sizeof(flist), inUseChunks);
+    printf("Total blocks: %d Free: %ld Used: %d \n", inUseChunks + freeChunks, sizeof(flist), inUseChunks);
     
     
     printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
