@@ -28,13 +28,18 @@ void *malloc (size_t size) {
           } else {
               flist = next->next;
           }
+          // amount of memory used in chunk from flist that was allocated
           next->memUse = size;
+          // returns pointer to the memory
           return (void*)(next + 1);
       } else {
           prev = next;
           next = next->next;
       }
   }
+    
+// if nothing in flist that fits memory allocated
+// (getting more memory from system)
 
   // sbrk is allocating new memory
   void *memory = sbrk(size + sizeof(struct chunk));
@@ -42,6 +47,7 @@ void *malloc (size_t size) {
   if (memory == (void *) -1) {
     return NULL;
   } else {
+      // creates a chunk that's exact size as what is allocated
     struct chunk* cnk = (struct chunk*) memory;
     cnk->size = size;
     cnk->memUse = size;
@@ -51,8 +57,8 @@ void *malloc (size_t size) {
 
 void free(void *memory) {
     if (memory != NULL){
-        // going back one chunk
         struct chunk *cnk = (struct chunk*)((struct chunk*) memory - 1);
+        // adding chunk to the beginning of the free list
         cnk -> next = flist;
         flist = cnk;
     }
@@ -63,6 +69,7 @@ void free(void *memory) {
 
 void fragstats(void* buffers[], int len) {
     
+    // (mostly for) calculating the internal
     int inUseChunks = 0;
     int internalUnused = 0;
     float internalUnusedAvg = 0;
@@ -71,12 +78,15 @@ void fragstats(void* buffers[], int len) {
     
     for(int i = 0; i < len; i++){
         if (buffers[i] != NULL){
+            // the total bytes of memory used/allocated in buffers
             inUseChunks++;
             
             struct chunk *cnk = (struct chunk*)((struct chunk*) buffers[i] - 1);
             
+            // getting unused by looking at how much memory in use in each chunk
             internalUnused += (cnk->size - cnk->memUse);
             
+            // logic for getting smallest unused memory chunk
             if(internalUnusedSmall == -1){
                 internalUnusedSmall = (cnk->size - cnk->memUse);
             } else {
@@ -85,6 +95,7 @@ void fragstats(void* buffers[], int len) {
                 }
             }
             
+            // logic for getting largest unused memory chunk
             if(internalUnusedLarge == -1){
                 internalUnusedLarge = (cnk->size - cnk->memUse);
             } else {
@@ -97,6 +108,7 @@ void fragstats(void* buffers[], int len) {
     
     internalUnusedAvg = internalUnused/inUseChunks;
     
+    // (mostly for) calculating the external
     int freeChunks = 0;
 
     int extUnused = 0;
@@ -107,11 +119,13 @@ void fragstats(void* buffers[], int len) {
     struct chunk *next = flist;
 
     while (next != NULL){
+        // number of free'd chunks in flist
         freeChunks++;
        
-
+        // logic for amount of free space in each free'd chunk
         extUnused += (next->size - next->memUse);
 
+        // smallest amount of free space
         if(extUnusedSmall == -1){
             extUnusedSmall = (next->size - next->memUse);
         } else {
@@ -120,6 +134,7 @@ void fragstats(void* buffers[], int len) {
             }
         }
 
+        // largest amount of free space
         if(extUnusedLarge == -1){
             extUnusedLarge = (next->size - next->memUse);
         } else {
