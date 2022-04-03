@@ -64,11 +64,38 @@ void free(void *memory) {
 void fragstats(void* buffers[], int len) {
     
     int inUseChunks = 0;
+    int internalUnused = 0;
+    float internalUnusedAvg = 0;
+    int internalUnusedSmall = -1;
+    int internalUnusedLarge = -1;
+    
     for(int i = 0; i < len; i++){
         if (buffers[i] != NULL){
             inUseChunks++;
+            
+            struct chunk *cnk = (struct chunk*)((struct chunk*) buffers[i] - 1);
+            
+            internalUnused += (cnk->size - cnk->memUse);
+            
+            if(internalUnusedSmall == -1){
+                internalUnusedSmall = (cnk->size - cnk->memUse);
+            } else {
+                if (internalUnused > (cnk->size - cnk->memUse)){
+                    internalUnusedSmall = (cnk->size - cnk->memUse);
+                }
+            }
+            
+            if(internalUnusedLarge == -1){
+                internalUnusedLarge = (cnk->size - cnk->memUse);
+            } else {
+                if (internalUnusedLarge < (cnk->size - cnk->memUse)){
+                    internalUnusedLarge = (cnk->size - cnk->memUse);
+                }
+            }
         }
     }
+    
+    internalUnusedAvg = internalUnused/inUseChunks;
     
     int freeChunks = 0;
     struct chunk *next = flist;
@@ -81,7 +108,9 @@ void fragstats(void* buffers[], int len) {
     
     
     printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, freeChunks, inUseChunks);
-//    printf("Internal unused: total: 95635 average: 1648.0 smallest: 6 largest: 3805 \n");
+    
+    
+    printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
 //    printf("External unused: total: 235487 average: 2770.0 smallest: 151 largest: 3999 \n");
     
     
