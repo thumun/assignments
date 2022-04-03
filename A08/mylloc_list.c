@@ -157,7 +157,7 @@ void fragstats(void* buffers[], int len) {
     printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
 
 
-    printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg, extUnusedSmall, extUnusedLarge);
+    printf("External unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg, extUnusedSmall, extUnusedLarge);
     
     
 }
