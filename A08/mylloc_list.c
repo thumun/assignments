@@ -98,20 +98,20 @@ void fragstats(void* buffers[], int len) {
     internalUnusedAvg = internalUnused/inUseChunks;
     
     int freeChunks = 0;
-    
+
     int extUnused = 0;
     float extUnusedAvg = 0;
     int extUnusedSmall = -1;
     int extUnusedLarge = -1;
-    
+
     struct chunk *next = flist;
 
     while (next != NULL){
         freeChunks++;
-        next = next->next;
-        
+       
+
         extUnused += (next->size - next->memUse);
-        
+
         if(extUnusedSmall == -1){
             extUnusedSmall = (next->size - next->memUse);
         } else {
@@ -119,7 +119,7 @@ void fragstats(void* buffers[], int len) {
                 extUnusedSmall = (next->size - next->memUse);
             }
         }
-        
+
         if(extUnusedLarge == -1){
             extUnusedLarge = (next->size - next->memUse);
         } else {
@@ -127,19 +127,21 @@ void fragstats(void* buffers[], int len) {
                 extUnusedLarge = (next->size - next->memUse);
             }
         }
-        
-        extUnusedAvg = extUnused/freeChunks;
-        
+
+        next = next->next;
+
     }
-    
+
+    extUnusedAvg = extUnused/freeChunks;
+
     
     
     printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, freeChunks, inUseChunks);
     
     
     printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
-    
-    
+
+
     printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg, extUnusedSmall, extUnusedLarge);
     
     
