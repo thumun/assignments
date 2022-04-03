@@ -63,27 +63,24 @@ void free(void *memory) {
 
 void fragstats(void* buffers[], int len) {
     
-    int nullCount;
-    int mallocAmount;
-    
-    for(int i = 0; i < len; i ++){
-        if (buffers[i] == NULL){
-            nullCount++;
+    int inUseChunks = 0;
+    for(int i = 0; i < len; i++){
+        if (buffers[i] != NULL){
+            inUseChunks++;
         }
     }
+    
+    int freeChunks = 0;
+    struct chunk *next = flist;
 
-    mallocAmount = len - nullCount;
+    while (next != NULL){
+        freeChunks++;
+        next = next->next;
+    }
     
-//    int totalFreeBlocks = 0;
-//
-//    struct chunk *next = flist;
-//
-//    while (next != NULL){
-//        totalFreeBlocks++;
-//        next = next->next;
-//    }
     
-    printf("Total blocks: %d Free: %d Used: %d \n", mallocAmount + nullCount, nullCount, mallocAmount);
+    
+    printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, freeChunks, inUseChunks);
 //    printf("Internal unused: total: 95635 average: 1648.0 smallest: 6 largest: 3805 \n");
 //    printf("External unused: total: 235487 average: 2770.0 smallest: 151 largest: 3999 \n");
     
