@@ -2,10 +2,13 @@
 
 Where did your run your tests? A laptop, or goldengate?
 
+Goldengate
 
 What are the performance specifications of the machine: number and speed of
 processors, size of RAM? (use `lscpu` and `free -m`)
 
+CPU speed: 3.40 GHz
+CPU number: 64
 
 = Allocations
 
@@ -13,9 +16,39 @@ In `simple.c`, where does the increase in 1040 bytes come from?
 Why is the value 1040 bytes?
 
 
+Printf allocated 1040 bytes buffer size for stdout
+
+1040 bytes seems to be a default. (When I changed the string to be something else, there was still an increase in 1040 bytes.)
+Also, when another printf statement was added there was no additional allocation.
+
+
 How many bytes does `mylloc_list.c` allocate when the program ends? Explain why
 this amount makes sense.
 
+Bytes allocated 1160 (0x488)
+
+Each allocation is allocating one struct chunk
+Struct chunk has a size of 16 (int size = 8 and pointer next = 8)
+
+100+16 is allocated in each loop
+
+Since the loop size is 10. It would be 10 * 160 which equals 1160. Which makes sense : )
+
 
 = Fragementation
+
+Fragmentation is when there are unused memory spaces during allocation (which happens in the current method of implementation).
+
+I'm going to explain internal fragmentation via an example:
+Say 100 bytes is allocated then free'd. Then there would be
+100 bytes in the flist. If the next allocation is 80 bytes, then by our current logic,
+the 100 bytes chunk in flist would be the space where the 80 bytes were allocated.
+If the next set of bytes to be allocated is 20, it would not take the 20 bytes of unused space
+from the last allocation but rather create a new chunk of 20 bytes (or get another chunk in flist).
+These unused spaces that are created during the allocation of chunks from flist is internal fragmentation.
+
+External fragmentation is when (to prevent internal fragmentation) the chunks are divided into smaller pieces. However, these pieces are too small to accomadate some larger allocations of memory.
+In other words, there would be plenty of free space (but in smaller chunks) but the memory cannot be allocated from these chunks. As such, (to solve this) the chunks need to be combined to create a larger chunk that can hold the memory allocated. 
+
+= Output
 
