@@ -80,7 +80,7 @@ void fragstats(void* buffers[], int len) {
             if(internalUnusedSmall == -1){
                 internalUnusedSmall = (cnk->size - cnk->memUse);
             } else {
-                if (internalUnused > (cnk->size - cnk->memUse)){
+                if (internalUnusedSmall > (cnk->size - cnk->memUse)){
                     internalUnusedSmall = (cnk->size - cnk->memUse);
                 }
             }
@@ -98,20 +98,49 @@ void fragstats(void* buffers[], int len) {
     internalUnusedAvg = internalUnused/inUseChunks;
     
     int freeChunks = 0;
+    
+    int extUnused = 0;
+    float extUnusedAvg = 0;
+    int extUnusedSmall = -1;
+    int extUnusedLarge = -1;
+    
     struct chunk *next = flist;
 
     while (next != NULL){
         freeChunks++;
         next = next->next;
+        
+        extUnused += (next->size - next->memUse);
+        
+        if(extUnusedSmall == -1){
+            extUnusedSmall = (next->size - next->memUse);
+        } else {
+            if (extUnusedSmall > (next->size - next->memUse)){
+                extUnusedSmall = (next->size - next->memUse);
+            }
+        }
+        
+        if(extUnusedLarge == -1){
+            extUnusedLarge = (next->size - next->memUse);
+        } else {
+            if (extUnusedLarge < (next->size - next->memUse)){
+                extUnusedLarge = (next->size - next->memUse);
+            }
+        }
+        
+        extUnusedAvg = extUnused/freeChunks;
+        
     }
     
     
     
-    printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, freeChunks, inUseChunks);
+    printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, sizeof(flist), inUseChunks);
     
     
     printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
-//    printf("External unused: total: 235487 average: 2770.0 smallest: 151 largest: 3999 \n");
+    
+    
+    printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg, extUnusedSmall, extUnusedLarge);
     
     
 }
