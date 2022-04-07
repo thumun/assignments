@@ -14,11 +14,9 @@ int main(int argc, char* argv[]) {
   float ymax = 1.12;
   int maxIterations = 1000;
 
-    int width = 0;
-    int height = 0;
+//    int width = 0;
+//    int height = 0;
     struct ppm_pixel * arrPx;
-
-    float timeStamp = 0;
 
     // add an input checker?
 
@@ -37,9 +35,10 @@ int main(int argc, char* argv[]) {
   printf("  X range = [%.4f,%.4f]\n", xmin, xmax);
   printf("  Y range = [%.4f,%.4f]\n", ymin, ymax);
 
-  // todo: your work here
+//  width = size;
+//  height = size;
 
-  arrPx = (struct ppm_pixel *) malloc(width * height * sizeof(struct ppm_pixel));
+  arrPx = (struct ppm_pixel *) malloc(size * size * sizeof(struct ppm_pixel));
 
   // generate pallet
   srand(time(0));
@@ -55,28 +54,25 @@ int main(int argc, char* argv[]) {
 
   // compute image
   // is it size or is it width/height
-  for (int i = 0; i < width; i++){
-    for (int j = 0; j < height; j++){
-        float xfrac = i/(float)size; // float?
-        float yfrac = j/(float)size;
+  for (int i = 0; i < size; i++){
+    for (int j = 0; j < size; j++){
+        float xfrac = j/(float)size;
+        float yfrac = i/(float)size;
         float x0 = xmin + xfrac*(xmax - xmin);
         float y0 = ymin + yfrac * (ymax - ymin);
 
-        // ints??
         float x = 0;
         float y = 0;
         int iter = 0;
 
         while (iter < maxIterations && (x*x + y*y < 2*2)){
-            int xtmp = x*x - y*y + x0;
+            float xtmp = x*x - y*y + x0;
             y = 2*x*y + y0;
             x = xtmp;
 
-            // stuff I added
             iter++;
         }
 
-        // need to create a var called color
         if (iter < maxIterations){
             arrPx[i*size + j].red = palette[iter].red;
             arrPx[i*size + j].blue = palette[iter].blue;
@@ -90,12 +86,14 @@ int main(int argc, char* argv[]) {
     }
   }
 
+    printf("Computed mandelbrot set (%dx%d) in 0.%ld seconds\n", size, size, time(0));
+
     // making new filename from old one
     char filename[100];
     sprintf(filename, "mandelbrot-%d-%ld.ppm", size, time(0));
 
     // writing to new file
-    write_ppm(filename, arrPx, width, height);
-    printf("Writing file %s", filename);
+    write_ppm(filename, arrPx, size, size);
+    printf("\nWriting file %s", filename);
 
 }

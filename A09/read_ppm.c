@@ -74,17 +74,12 @@ void write_ppm(const char* filename, struct ppm_pixel* pixels, int w, int h) {
     FILE * fp = NULL;
 
     // file that's being written to
-    fp = fopen(filename, "w+");
+    fp = fopen(filename, "wb");
 
     // adding header info
     fputs("P6\n", fp);
     fprintf(fp, "%d %d\n", w, h);
     fputs("255\n", fp);
-
-    fclose(fp);
-
-    // opening up file again to add encoded pixel info
-    fp = fopen(filename, "ab"); // writing to file
 
     fwrite(pixels, sizeof(struct ppm_pixel), h * w, fp);
 
