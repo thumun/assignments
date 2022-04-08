@@ -14,7 +14,11 @@ int main(int argc, char *argv[]) {
     float ymax = 1.12;
     int maxIterations = 1000;
 
-    struct ppm_pixel *arrPx;
+    double timer = 0.0;
+
+    struct timeval tstart, tend;
+    struct ppm_pixel * arrPx;
+    struct ppm_pixel * palette;
 
     // getting command line info
     int opt;
@@ -50,7 +54,7 @@ int main(int argc, char *argv[]) {
     srand(time(0));
 
     // creating the palette based on maxIterations
-    struct ppm_pixel *palette = (struct ppm_pixel *) malloc(maxIterations * sizeof(struct ppm_pixel));
+    palette = (struct ppm_pixel *) malloc(maxIterations * sizeof(struct ppm_pixel));
 
     // generating rgb vals
     for (int i = 0; i < maxIterations; i++) {
@@ -58,6 +62,8 @@ int main(int argc, char *argv[]) {
         palette[i].green = rand() % 255;
         palette[i].blue = rand() % 255;
     }
+
+    gettimeofday(&tstart, NULL);
 
     // computing fractals
     for (int i = 0; i < size; i++) {
@@ -91,7 +97,10 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("Computed mandelbrot set (%dx%d) in 0.%ld seconds\n", size, size, time(0));
+    gettimeofday(&tend, NULL);
+    timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
+
+    printf("Computed mandelbrot set (%dx%d) in %g seconds\n", size, size, timer);
 
     // making filename
     char filename[100];
@@ -100,5 +109,11 @@ int main(int argc, char *argv[]) {
     // writing to new file
     write_ppm(filename, arrPx, size, size);
     printf("\nWriting file %s", filename);
+
+    free(arrPx);
+    free(palette);
+
+    arrPx = NULL;
+    palette = NULL;
 
 }

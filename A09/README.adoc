@@ -6,9 +6,9 @@ Laptop [Mac]
 What are the performance specifications of the machine: number and speed of
 processors, size of RAM? (use `lscpu` and `free -m`)
 
-Number: ???
+Number of processors: 4 (4 cores 1 processor for each)
 Speed: 2.00 GHz
-Size of RAM: ???
+Size of RAM: 16 GB
 
 = Single-process mandelbrot
 
@@ -18,11 +18,11 @@ the amount of time it takes to compute each image.
 [cols="1,1"]
 !===
 | Size | Time (s) 
-| 100 | 0.1649388211
-| 400 | 0.1649388243
-| 800 | 0.1649388249
-| 1000 | 0.1649388255
-| 2000 | 0.1649388269
+| 100 | 0.020716
+| 400 | 0.374694
+| 800 | 1.33565
+| 1000 | 2.09147
+| 2000 | 8.14637
 !===
 
 = Multi-process mandelbrot
