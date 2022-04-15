@@ -37,5 +37,5 @@ the amount of time it takes to compute each image.
 | 400 | 0.146228
 | 800 | 0.555256
 | 1000 | 0.853714
-| 2000 | todo
+| 2000 | 2.79571 **NOTE! I ran this on goldengate since my computer refused to allocate shared memory for 2000 x 2000 pixels**
 !===
