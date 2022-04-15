@@ -3,42 +3,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include "read_ppm.h"
+#include "calculate_mandelbrot.h"
 #include <string.h>
-
-void computeMandelbrot(struct ppm_pixel* arrPx, struct ppm_pixel* palette, int size, float xmin, float xmax, float ymin, float ymax, int maxIterations){
-    // computing fractals
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            float xfrac = j / (float) size;
-            float yfrac = i / (float) size;
-            float x0 = xmin + xfrac * (xmax - xmin);
-            float y0 = ymin + yfrac * (ymax - ymin);
-
-            float x = 0;
-            float y = 0;
-            int iter = 0;
-
-            while (iter < maxIterations && (x * x + y * y < 2 * 2)) {
-                float xtmp = x * x - y * y + x0;
-                y = 2 * x * y + y0;
-                x = xtmp;
-
-                iter++;
-            }
-
-            if (iter < maxIterations) {
-                arrPx[i * size + j].red = palette[iter].red;
-                arrPx[i * size + j].blue = palette[iter].blue;
-                arrPx[i * size + j].green = palette[iter].green;
-            } else {
-                arrPx[i * size + j].red = 0;
-                arrPx[i * size + j].blue = 0;
-                arrPx[i * size + j].green = 0;
-            }
-        }
-    }
-}
 
 int main(int argc, char *argv[]) {
     int size = 480;
@@ -99,7 +65,7 @@ int main(int argc, char *argv[]) {
 
     gettimeofday(&tstart, NULL);
 
-    computeMandelbrot(arrPx, palette, size, xmin, xmax, ymin, ymax, maxIterations);
+    computeMandelbrot(arrPx, palette, size, 0, 0, size, size, xmin, xmax, ymin, ymax, maxIterations);
 
     gettimeofday(&tend, NULL);
     timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;

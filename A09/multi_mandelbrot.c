@@ -7,42 +7,7 @@
 #include <sys/time.h>
 #include <sys/shm.h>
 #include <sys/ipc.h>
-#include "read_ppm.h"
-
-void computeMandelbrot(struct ppm_pixel* arrPx, struct ppm_pixel* palette, int rowleft, int rowright, int colup, int coldown, float xmin, float xmax, float ymin, float ymax, int maxIterations){
-    // computing fractals
-
-    for (int i = rowleft; i < rowright; i++) {
-        for (int j = colup; j < coldown; j++) {
-            float xfrac = j / (float) (rowright - rowleft);
-            float yfrac = i / (float) (coldown - colup);
-            float x0 = xmin + xfrac * (xmax - xmin);
-            float y0 = ymin + yfrac * (ymax - ymin);
-
-            float x = 0;
-            float y = 0;
-            int iter = 0;
-
-            while (iter < maxIterations && (x * x + y * y < 2 * 2)) {
-                float xtmp = x * x - y * y + x0;
-                y = 2 * x * y + y0;
-                x = xtmp;
-
-                iter++;
-            }
-
-            if (iter < maxIterations) {
-                arrPx[i * (rowright - rowleft) + j].red = palette[iter].red;
-                arrPx[i * (rowright - rowleft) + j].blue = palette[iter].blue;
-                arrPx[i * (rowright - rowleft) + j].green = palette[iter].green;
-            } else {
-                arrPx[i * (rowright - rowleft) + j].red = 0;
-                arrPx[i * (rowright - rowleft) + j].blue = 0;
-                arrPx[i * (rowright - rowleft) + j].green = 0;
-            }
-        }
-    }
-}
+#include "calculate_mandelbrot.h"
 
 int main(int argc, char* argv[]) {
   int size = 480;
@@ -52,7 +17,7 @@ int main(int argc, char* argv[]) {
   float ymax = 1.12;
   int maxIterations = 1000;
 
-    double timer = 0.0;
+    double timer;
     struct timeval tstart, tend;
 
   int numProcesses = 4;
@@ -103,18 +68,19 @@ int main(int argc, char* argv[]) {
 
         if (child == 0){
             // depending on which child process: computes a different part
+            int pid = getpid();
             if (i == 0){
-                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", child, 0, size/2, 0, size/2);
-                computeMandelbrot(arrPx, palette, 0, size/2, 0, size/2, xmin, xmax/2, ymin, ymax/2, maxIterations);
+                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", pid, 0, size/2, 0, size/2);
+                computeMandelbrot(arrPx, palette, size, 0, 0, size/2, size/2, xmin, xmax, ymin, ymax, maxIterations);
             } else if (i == 1){
-                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", child, size/2, size, 0, size/2);
-                computeMandelbrot(arrPx, palette, size/2, size, 0, size/2, xmin/2, xmax, ymin, ymax/2, maxIterations);
+                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", pid, size/2, size, 0, size/2);
+                computeMandelbrot(arrPx, palette, size, 0, size/2, size/2, size, xmin, xmax, ymin, ymax, maxIterations);
             } else if (i == 2){
-                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", child, 0, size/2, size/2, size);
-                computeMandelbrot(arrPx, palette, 0, size/2, size/2, size, xmin, xmax/2, ymin/2, ymax, maxIterations);
+                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", pid, 0, size/2, size/2, size);
+                computeMandelbrot(arrPx, palette, size, size/2, 0, size, size/2, xmin, xmax, ymin, ymax, maxIterations);
             } else {
-                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", child, size/2, size, size/2, size);
-                computeMandelbrot(arrPx, palette, size/2, size, size/2, size, xmin/2, xmax, ymin/2, ymax, maxIterations);
+                printf("%d) Sub-image block: cols (%d, %d) to rows (%d, %d)\n", pid, size/2, size, size/2, size);
+                computeMandelbrot(arrPx, palette, size, size/2, size/2, size, size, xmin, xmax, ymin, ymax, maxIterations);
             }
 
             exit(0);
