@@ -6,6 +6,59 @@
 #include <pthread.h>
 #include "read_ppm.h"
 
+struct thread_data {
+    struct ppm_pixel * arrPx;
+    struct ppm_pixel * palette;
+    int rowMin;
+    int colMin;
+    int rowMax;
+    int colMax;
+    float xmin;
+    float xmax;
+    float ymin;
+    float ymax;
+    int maxIterations;
+    int size
+};
+
+void * computeMandelbrot(void * inputData){
+
+    struct thread_data *data = (struct thread_data *) inputData;
+
+    // computing fractals
+
+    for (int i = data->rowMin; i < data->rowMax; i++) {
+        for (int j = data->colMin; j < data->colMax; j++) {
+            float xfrac = j / (float) data->size;
+            float yfrac = i / (float) data->size;
+            float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
+            float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
+
+            float x = 0;
+            float y = 0;
+            int iter = 0;
+
+            while (iter < data->maxIterations && (x * x + y * y < 2 * 2)) {
+                float xtmp = x * x - y * y + x0;
+                y = 2 * x * y + y0;
+                x = xtmp;
+
+                iter++;
+            }
+
+            if (iter < data->maxIterations) {
+                data->arrPx[i * data->size + j].red = data->palette[iter].red;
+                data->arrPx[i * data->size + j].blue = data->palette[iter].blue;
+                data->arrPx[i * data->size + j].green = data->palette[iter].green;
+            } else {
+                data->arrPx[i * data->size + j].red = 0;
+                data->arrPx[i * data->size + j].blue = 0;
+                data->arrPx[i * data->size + j].green = 0;
+            }
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
   int size = 480;
   float xmin = -2.0;
@@ -33,6 +86,65 @@ int main(int argc, char* argv[]) {
   printf("  Y range = [%.4f,%.4f]\n", ymin, ymax);
 
   // todo: your code here
+
+    srand(time(0));
+
   // generate pallet
+    // creating the palette based on maxIterations
+    struct ppm_pixel * palette = (struct ppm_pixel *) malloc(maxIterations * sizeof(struct ppm_pixel));
+
+    // generating rgb vals
+    for (int i = 0; i < maxIterations; i++) {
+        palette[i].red = rand() % 255;
+        palette[i].green = rand() % 255;
+        palette[i].blue = rand() % 255;
+    }
+
+    // allocating space for array of pixels (for fractals)
+    struct ppm_pixel * arrPx = (struct ppm_pixel *) malloc(*h * *w * sizeof(struct ppm_pixel));
+
   // compute image
+
+    pthread_t threads[4];
+    struct thread_data data[4];
+    int subsize = size/4;
+
+    for (int i = 0; i < 4; i++) {
+        data[i].arrPx = &arrPx[0]; // check
+        data[i].palette = palette;
+
+        // how to do this nicely for each process
+        data[i].rowMin = 0;
+        data[i].colMin = 0;
+        data[i].rowMax = 0;
+        data[i].colMax = 0;
+        
+        data[i].xmin = xmax;
+        data[i].xmax = xmax;
+        data[i].ymin = ymin;
+        data[i].ymax = ymax;
+        data[i].maxIterations = maxIterations;
+        data[i].size = subsize;
+
+        pthread_create(&threads[i], NULL, computeMandelbrot, (void*) &data[i]);
+        printf("Thread %d) sub-image block: cols (%d, %d) to rows (%d, %d)",
+               threads[i].pthread_self(), data[i].colMin, data[i].colMax, data[i].rowMin, data[i].rowMax);
+    }
+
+    for (int i = 0; i < 4; i++) {
+        printf("Thread %d) finished", threads[i].pthread_self());
+        pthread_join(threads[i], NULL);
+    }
+
+    // making filename
+    char filename[100];
+    sprintf(filename, "mandelbrot-%d-%ld.ppm", size, time(0));
+
+    // write to file
+    write_ppm(filename, arrPx, size, size);
+    printf("\nWriting file %s", filename);
+
+    // free stuff
+    // also check free in valgrind
+
 }
