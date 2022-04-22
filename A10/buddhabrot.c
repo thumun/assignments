@@ -70,6 +70,8 @@ void * computeMandelbrot(void * inputData){
     for (int i = data->rowMin; i < data->rowMax; i++) {
         for (int j = data->colMin; j < data->colMax; j++) {
 
+            data->count[i * data->size + j] = 0; 
+
             if (data->membership[i * data->size + j] == true){
                 continue;
             }
