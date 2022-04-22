@@ -72,7 +72,7 @@ void * computeMandelbrot(void * inputData){
 
             data->count[i * data->size + j] = 0;
 
-            if (data->membership[i * data->size + j] == false){
+            if (data->membership[i * data->size + j] == true){
                 continue;
             }
 
@@ -98,7 +98,7 @@ void * computeMandelbrot(void * inputData){
                 data->count[i * data->size + j] += 1;
 
                 pthread_mutex_lock(&mutex);
-                if (maxCount > data->count[i * data->size + j]){
+                if (maxCount < data->count[i * data->size + j]){
                     maxCount = data->count[i * data->size + j];
                 }
                 pthread_mutex_unlock(&mutex);
