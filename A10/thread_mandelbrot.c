@@ -23,6 +23,7 @@ struct thread_data {
     int size;
 };
 
+// function for
 void * computeMandelbrot(void * inputData){
 
     struct thread_data *data = (struct thread_data *) inputData;
