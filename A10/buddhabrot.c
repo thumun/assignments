@@ -70,7 +70,7 @@ void * computeMandelbrot(void * inputData){
     for (int i = data->rowMin; i < data->rowMax; i++) {
         for (int j = data->colMin; j < data->colMax; j++) {
 
-            data->count[i * data->size + j] = 0; 
+            data->count[i * data->size + j] = 0;
 
             if (data->membership[i * data->size + j] == true){
                 continue;
@@ -137,8 +137,8 @@ void * computeMandelbrot(void * inputData){
 
 int main(int argc, char* argv[]) {
   int size = 480;
-  float xmin = -2.0;
-  float xmax = 0.47;
+  float xmin = -2.5;
+  float xmax = 1.0;
   float ymin = -1.12;
   float ymax = 1.12;
   int maxIterations = 1000;
