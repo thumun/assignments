@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <assert.h>
 #include <time.h>
+#include <sys/wait.h>
+#include <sys/time.h>
 #include <pthread.h>
 #include "read_ppm.h"
 
@@ -18,7 +20,7 @@ struct thread_data {
     float ymin;
     float ymax;
     int maxIterations;
-    int size
+    int size;
 };
 
 void * computeMandelbrot(void * inputData){
@@ -57,7 +59,9 @@ void * computeMandelbrot(void * inputData){
             }
         }
     }
+    return NULL;
 }
+
 
 int main(int argc, char* argv[]) {
   int size = 480;
@@ -67,6 +71,9 @@ int main(int argc, char* argv[]) {
   float ymax = 1.12;
   int maxIterations = 1000;
   int numProcesses = 4;
+
+    double timer;
+    struct timeval tstart, tend;
 
   int opt;
   while ((opt = getopt(argc, argv, ":s:l:r:t:b:p:")) != -1) {
@@ -101,40 +108,64 @@ int main(int argc, char* argv[]) {
     }
 
     // allocating space for array of pixels (for fractals)
-    struct ppm_pixel * arrPx = (struct ppm_pixel *) malloc(*h * *w * sizeof(struct ppm_pixel));
+    struct ppm_pixel * arrPx = (struct ppm_pixel *) malloc(size * size * sizeof(struct ppm_pixel));
+
+    gettimeofday(&tstart, NULL);
 
   // compute image
 
     pthread_t threads[4];
     struct thread_data data[4];
-    int subsize = size/4;
 
     for (int i = 0; i < 4; i++) {
-        data[i].arrPx = &arrPx[0]; // check
+        data[i].arrPx = arrPx;
         data[i].palette = palette;
 
-        // how to do this nicely for each process
-        data[i].rowMin = 0;
-        data[i].colMin = 0;
-        data[i].rowMax = 0;
-        data[i].colMax = 0;
-        
-        data[i].xmin = xmax;
+        if (i == 0){
+            data[i].rowMin = 0;
+            data[i].colMin = 0;
+            data[i].rowMax = size/2;
+            data[i].colMax = size/2;
+        } else if (i == 1){
+            data[i].rowMin = 0;
+            data[i].colMin = size/2;
+            data[i].rowMax = size/2;
+            data[i].colMax = size;
+        } else if (i == 2){
+            data[i].rowMin = size/2;
+            data[i].colMin = 0;
+            data[i].rowMax = size;
+            data[i].colMax = size/2;
+        } else {
+            data[i].rowMin = size/2;
+            data[i].colMin = size/2;
+            data[i].rowMax = size;
+            data[i].colMax = size;
+        }
+
+        data[i].xmin = xmin;
         data[i].xmax = xmax;
         data[i].ymin = ymin;
         data[i].ymax = ymax;
         data[i].maxIterations = maxIterations;
-        data[i].size = subsize;
+        data[i].size = size;
 
         pthread_create(&threads[i], NULL, computeMandelbrot, (void*) &data[i]);
-        printf("Thread %d) sub-image block: cols (%d, %d) to rows (%d, %d)",
-               threads[i].pthread_self(), data[i].colMin, data[i].colMax, data[i].rowMin, data[i].rowMax);
+        printf("Thread %d) sub-image block: cols (%d, %d) to rows (%d, %d)\n",
+               (int) threads[i], data[i].colMin, data[i].colMax, data[i].rowMin, data[i].rowMax);
     }
 
     for (int i = 0; i < 4; i++) {
-        printf("Thread %d) finished", threads[i].pthread_self());
         pthread_join(threads[i], NULL);
+        printf("Thread %d) finished\n", (int) threads[i]);
     }
+
+
+    gettimeofday(&tend, NULL);
+    timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
+
+    printf("Computed mandelbrot set (%dx%d) in %g seconds\n", size, size, timer);
+
 
     // making filename
     char filename[100];
@@ -145,6 +176,12 @@ int main(int argc, char* argv[]) {
     printf("\nWriting file %s", filename);
 
     // free stuff
+    free(arrPx);
+    free(palette);
+
+    arrPx = NULL;
+    palette = NULL;
+
     // also check free in valgrind
 
 }
