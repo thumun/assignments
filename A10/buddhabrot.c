@@ -87,7 +87,7 @@ void * computeMandelbrot(void * inputData){
                     float xtmp = x * x - y * y + x0;
                     y = 2 * x * y + y0;
                     x = xtmp;
-                    
+
                     iter ++;
 
                     int yrow = round(data->size * (y - data->ymin) / (data->ymax - data->ymin));
@@ -96,7 +96,7 @@ void * computeMandelbrot(void * inputData){
                     if (yrow < 0 || yrow >= data->size) continue; // out of range
                     if (xcol < 0 || xcol >= data->size) continue; // out of range
 
-                    data->count[i * data->size + j] += 1;
+                    data->count[yrow * data->size + xcol] += 1;
 
                     pthread_mutex_lock(&mutex);
                     if (maxCount < data->count[yrow * data->size + xcol]) {
