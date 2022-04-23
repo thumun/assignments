@@ -255,10 +255,10 @@ int main(int argc, char* argv[]) {
 
     // making filename
     char filename[100];
-    //sprintf(filename, "buddhabrot-%d-%ld.ppm", size, time(0));
+    sprintf(filename, "buddhabrot-%d-%ld.ppm", size, time(0));
 
-    //CHANGE BACK TO ACTUAL FILENAME
-    sprintf(filename, "buddhabrot.ppm");
+// for testing
+//    sprintf(filename, "buddhabrot.ppm");
 
     // write to file
     write_ppm(filename, arrPx, size, size);
