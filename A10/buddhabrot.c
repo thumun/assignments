@@ -72,36 +72,35 @@ void * computeMandelbrot(void * inputData){
 
             data->count[i * data->size + j] = 0;
 
-            if (data->membership[i * data->size + j] == false){
-                continue;
-            }
+            if (data->membership[i * data->size + j] == true) {
 
-            float xfrac = j / (float) data->size;
-            float yfrac = i / (float) data->size;
-            float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
-            float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
+                float xfrac = j / (float) data->size;
+                float yfrac = i / (float) data->size;
+                float x0 = data->xmin + xfrac * (data->xmax - data->xmin);
+                float y0 = data->ymin + yfrac * (data->ymax - data->ymin);
 
-            float x = 0;
-            float y = 0;
+                float x = 0;
+                float y = 0;
 
-            while (x * x + y * y < 2 * 2) {
-                float xtmp = x * x - y * y + x0;
-                y = 2 * x * y + y0;
-                x = xtmp;
+                while (x * x + y * y < 2 * 2) {
+                    float xtmp = x * x - y * y + x0;
+                    y = 2 * x * y + y0;
+                    x = xtmp;
 
-                int yrow = round(data->size * (y - data->ymin)/(data->ymax - data->ymin));
-                int xcol = round(data->size * (x - data->xmin)/(data->xmax - data->xmin));
+                    int yrow = round(data->size * (y - data->ymin) / (data->ymax - data->ymin));
+                    int xcol = round(data->size * (x - data->xmin) / (data->xmax - data->xmin));
 
-                if (yrow < 0 || yrow >= data->size) continue; // out of range
-                if (xcol < 0 || xcol >= data->size) continue; // out of range
+                    if (yrow < 0 || yrow >= data->size) continue; // out of range
+                    if (xcol < 0 || xcol >= data->size) continue; // out of range
 
-                data->count[i * data->size + j] += 1;
+                    data->count[i * data->size + j] += 1;
 
-                pthread_mutex_lock(&mutex);
-                if (maxCount < data->count[yrow * data->size + xcol]){
-                    maxCount = data->count[yrow * data->size + xcol];
+                    pthread_mutex_lock(&mutex);
+                    if (maxCount < data->count[yrow * data->size + xcol]) {
+                        maxCount = data->count[yrow * data->size + xcol];
+                    }
+                    pthread_mutex_unlock(&mutex);
                 }
-                pthread_mutex_unlock(&mutex);
             }
         }
     }
@@ -252,7 +251,10 @@ int main(int argc, char* argv[]) {
 
     // making filename
     char filename[100];
-    sprintf(filename, "buddhabrot-%d-%ld.ppm", size, time(0));
+    //sprintf(filename, "buddhabrot-%d-%ld.ppm", size, time(0));
+
+    //CHANGE BACK TO ACTUAL FILENAME
+    sprintf(filename, "buddhabrot.ppm");
 
     // write to file
     write_ppm(filename, arrPx, size, size);
