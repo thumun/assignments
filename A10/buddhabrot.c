@@ -50,7 +50,7 @@ void * computeMandelbrot(void * inputData){
             float y = 0;
             int iter = 0;
 
-            while (iter < data->maxIterations && (x * x + y * y < 2 * 2)) {
+            while (/*iter < data->maxIterations &&*/ (x * x + y * y < 2 * 2)) {
                 float xtmp = x * x - y * y + x0;
                 y = 2 * x * y + y0;
                 x = xtmp;
