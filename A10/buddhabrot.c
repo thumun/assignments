@@ -87,6 +87,8 @@ void * computeMandelbrot(void * inputData){
                     float xtmp = x * x - y * y + x0;
                     y = 2 * x * y + y0;
                     x = xtmp;
+                    
+                    iter ++;
 
                     int yrow = round(data->size * (y - data->ymin) / (data->ymax - data->ymin));
                     int xcol = round(data->size * (x - data->xmin) / (data->xmax - data->xmin));
