@@ -71,7 +71,7 @@ void * computeMandelbrot(void * inputData){
     for (int i = data->rowMin; i < data->rowMax; i++) {
         for (int j = data->colMin; j < data->colMax; j++) {
 
-            if (data->membership[i * data->size + j] == false) {
+            if (data->membership[i * data->size + j] == true) {
 
                 float xfrac = j / (float) data->size;
                 float yfrac = i / (float) data->size;
