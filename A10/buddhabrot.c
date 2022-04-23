@@ -72,7 +72,7 @@ void * computeMandelbrot(void * inputData){
 
             data->count[i * data->size + j] = 0;
 
-            if (data->membership[i * data->size + j] == true){
+            if (data->membership[i * data->size + j] == false){
                 continue;
             }
 
@@ -98,8 +98,8 @@ void * computeMandelbrot(void * inputData){
                 data->count[i * data->size + j] += 1;
 
                 pthread_mutex_lock(&mutex);
-                if (maxCount < data->count[i * data->size + j]){
-                    maxCount = data->count[i * data->size + j];
+                if (maxCount < data->count[yrow * data->size + xcol]){
+                    maxCount = data->count[yrow * data->size + xcol];
                 }
                 pthread_mutex_unlock(&mutex);
             }
@@ -132,7 +132,6 @@ void * computeMandelbrot(void * inputData){
 
     return NULL;
 }
-
 
 
 int main(int argc, char* argv[]) {
@@ -268,6 +267,9 @@ int main(int argc, char* argv[]) {
 
     arrPx = NULL;
     palette = NULL;
+
+    count = NULL;
+    membership = NULL;
 
     // also check free in valgrind
 }
