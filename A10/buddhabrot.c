@@ -9,6 +9,7 @@
 #include <time.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+#include <string.h>
 #include "read_ppm.h"
 
 static unsigned long long maxCount = 0;
@@ -69,8 +70,6 @@ void * computeMandelbrot(void * inputData){
 
     for (int i = data->rowMin; i < data->rowMax; i++) {
         for (int j = data->colMin; j < data->colMax; j++) {
-
-            data->count[i * data->size + j] = 0;
 
             if (data->membership[i * data->size + j] == false) {
 
@@ -183,6 +182,7 @@ int main(int argc, char* argv[]) {
 
     bool * membership = (bool *) malloc(size * size * sizeof(bool));
     int * count = (int *) malloc(size * size * sizeof(int));
+    memset(count, 0, size * size * sizeof(int));
 
     gettimeofday(&tstart, NULL);
 
