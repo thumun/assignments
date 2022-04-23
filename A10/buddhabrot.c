@@ -72,7 +72,7 @@ void * computeMandelbrot(void * inputData){
 
             data->count[i * data->size + j] = 0;
 
-            if (data->membership[i * data->size + j] == true) {
+            if (data->membership[i * data->size + j] == false) {
 
                 float xfrac = j / (float) data->size;
                 float yfrac = i / (float) data->size;
