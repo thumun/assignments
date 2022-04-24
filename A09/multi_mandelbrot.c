@@ -41,8 +41,23 @@ int main(int argc, char* argv[]) {
 
     srand(time(0));
 
+    int shmid = shmget(IPC_PRIVATE, size * size * sizeof(struct ppm_pixel), 0644 | IPC_CREAT);
+    if (shmid == -1) {
+        perror("Error: cannot initialize shared memory\n");
+        exit(1);
+    }
+
+    int paletteid = shmget(IPC_PRIVATE, maxIterations * sizeof(struct ppm_pixel), 0644 | IPC_CREAT);
+    if (paletteid == -1){
+        perror("Error: cannot initialize shared memory\n");
+        exit(1);
+    }
+
+
     // creating the palette based on maxIterations
-    struct ppm_pixel * palette = (struct ppm_pixel *) malloc(maxIterations * sizeof(struct ppm_pixel));
+//    struct ppm_pixel * palette = (struct ppm_pixel *) malloc(maxIterations * sizeof(struct ppm_pixel));
+    struct ppm_pixel * palette = (struct ppm_pixel *) shmat(paletteid, NULL, 0);
+
 
     // generating rgb vals
     for (int i = 0; i < maxIterations; i++) {
@@ -51,12 +66,6 @@ int main(int argc, char* argv[]) {
         palette[i].blue = rand() % 255;
     }
 
-    int shmid;
-    shmid = shmget(IPC_PRIVATE, size * size * sizeof(struct ppm_pixel), 0644 | IPC_CREAT);
-    if (shmid == -1) {
-        perror("Error: cannot initialize shared memory\n");
-        exit(1);
-    }
 
     // allocating space for array of pixels (for fractals)
     struct ppm_pixel * arrPx = (struct ppm_pixel *) shmat(shmid, NULL, 0);
@@ -111,11 +120,16 @@ int main(int argc, char* argv[]) {
     write_ppm(filename, arrPx, size, size);
     printf("\nWriting file %s", filename);
 
-    free(palette);
-    palette = NULL;
+//    free(palette);
+//    palette = NULL;
 
     // freeing shared memory
     if (shmdt(arrPx) == -1) {
+        perror("Error: cannot detatch from shared memory\n");
+        exit(1);
+    }
+
+    if (shmdt(palette) == -1) {
         perror("Error: cannot detatch from shared memory\n");
         exit(1);
     }
@@ -125,4 +139,8 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
+    if (shmctl(paletteid, IPC_RMID, 0) == -1) {
+        perror("Error: cannot remove shared memory\n");
+        exit(1);
+    }
 }
