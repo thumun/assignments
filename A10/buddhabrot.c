@@ -96,7 +96,9 @@ void * computeMandelbrot(void * inputData){
                     if (yrow < 0 || yrow >= data->size) continue; // out of range
                     if (xcol < 0 || xcol >= data->size) continue; // out of range
 
+                    pthread_mutex_lock(&mutex);
                     data->count[yrow * data->size + xcol] += 1;
+                    pthread_mutex_unlock(&mutex);
 
                     pthread_mutex_lock(&mutex);
                     if (maxCount < data->count[yrow * data->size + xcol]) {
