@@ -279,5 +279,4 @@ int main(int argc, char* argv[]) {
     count = NULL;
     membership = NULL;
 
-    // also check free in valgrind
 }
