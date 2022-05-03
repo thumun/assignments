@@ -18,6 +18,6 @@ int main (int argc, char* argv[]) {
     void* current = sbrk(0);
 
     printf("Bytes allocated %ld (0x%lx) \n", current-heapTop, current-heapTop);
- 
+
   return 0 ;
 }

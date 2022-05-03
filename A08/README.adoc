@@ -16,26 +16,26 @@ CPU number: 64
 In `simple.c`, where does the increase in 1040 bytes come from?
 Why is the value 1040 bytes?
 
-Printf allocated 1040 bytes buffer size for stdout
-
-1040 bytes seems to be a default. (When I changed the string to be something else, there was still an increase in 1040 bytes.)
-Also, when another printf statement was added there was no additional allocation.
-
+Printf allocated 1024 bytes along with 16 bytes for the chunk header.
+(Since the version of malloc in myalloc_c has a chunk header implementation (with 16 bytes))
+This results in the 1040 byte increase.
 
 How many bytes does `mylloc_list.c` allocate when the program ends? Explain why
 this amount makes sense.
 
-Bytes allocated 1160 (0x488)
+Bytes allocated 1156 (0x484).
 
-Each allocation is allocating one struct chunk
-Struct chunk has a size of 16 (int size = 8 and pointer next = 8)
+Each allocation is allocating one struct chunk and one printf.
+From simple.c, know that printf allocates 1024 bytes while the
+struct chunk has a size of 16 (int size = 8 and pointer next = 8).
 
-100+16 is allocated in each loop
+There is also an additional 100 bytes (the size of the malloc block). This malloc also
+creates an additional chunk header (so +16 bytes).
 
-Since the loop size is 10. It would be 10 * 160 which equals 1160. Which makes sense : )
+As such, this amount would be: 1024 + 16 + 100 + 16 = 1156 bytes.
 
 
-= Fragementation
+= Fragmentation
 
 Fragmentation is when there are unused memory spaces during allocation (which happens in the current method of implementation).
 
