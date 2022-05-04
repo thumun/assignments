@@ -84,23 +84,23 @@ void fragstats(void* buffers[], int len) {
             struct chunk *cnk = (struct chunk*)((struct chunk*) buffers[i] - 1);
             
             // getting unused by looking at how much memory in use in each chunk
-            internalUnused += (cnk->size - cnk->memUse);
+            internalUnused += (cnk->memUse);
             
             // logic for getting smallest unused memory chunk
             if(internalUnusedSmall == -1){
-                internalUnusedSmall = (cnk->size - cnk->memUse);
+                internalUnusedSmall = (cnk->memUse);
             } else {
-                if (internalUnusedSmall > (cnk->size - cnk->memUse)){
-                    internalUnusedSmall = (cnk->size - cnk->memUse);
+                if (internalUnusedSmall > (cnk->memUse)){
+                    internalUnusedSmall = (cnk->memUse);
                 }
             }
             
             // logic for getting largest unused memory chunk
             if(internalUnusedLarge == -1){
-                internalUnusedLarge = (cnk->size - cnk->memUse);
+                internalUnusedLarge = (cnk->memUse);
             } else {
-                if (internalUnusedLarge < (cnk->size - cnk->memUse)){
-                    internalUnusedLarge = (cnk->size - cnk->memUse);
+                if (internalUnusedLarge < (cnk->memUse)){
+                    internalUnusedLarge = (cnk->memUse);
                 }
             }
         }
