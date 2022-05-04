@@ -124,23 +124,23 @@ void fragstats(void* buffers[], int len) {
         freeChunks++;
        
         // logic for amount of free space in each free'd chunk
-        extUnused += (next->size - next->memUse);
+        extUnused += (next->size);
 
         // smallest amount of free space
         if(extUnusedSmall == -1){
-            extUnusedSmall = (next->size - next->memUse);
+            extUnusedSmall = (next->size);
         } else {
-            if (extUnusedSmall > (next->size - next->memUse)){
-                extUnusedSmall = (next->size - next->memUse);
+            if (extUnusedSmall > (next->size)){
+                extUnusedSmall = (next->size);
             }
         }
 
         // largest amount of free space
         if(extUnusedLarge == -1){
-            extUnusedLarge = (next->size - next->memUse);
+            extUnusedLarge = (next->size);
         } else {
-            if (extUnusedLarge < (next->size - next->memUse)){
-                extUnusedLarge = (next->size - next->memUse);
+            if (extUnusedLarge < (next->size)){
+                extUnusedLarge = (next->size);
             }
         }
 
