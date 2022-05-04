@@ -105,8 +105,9 @@ void fragstats(void* buffers[], int len) {
             }
         }
     }
-    
-    internalUnusedAvg = internalUnused/inUseChunks;
+
+    // 5/4/22 : typecasting this
+    internalUnusedAvg = (float) internalUnused/inUseChunks;
     
     // (mostly for) calculating the external
     int freeChunks = 0;
@@ -147,18 +148,16 @@ void fragstats(void* buffers[], int len) {
 
     }
 
-    extUnusedAvg = extUnused/freeChunks;
-
-    
+    // 5/4/22 : typecasting this
+    extUnusedAvg = (float) extUnused/freeChunks;
     
     printf("Total blocks: %d Free: %d Used: %d \n", inUseChunks + freeChunks, freeChunks, inUseChunks);
-    
-    
-    printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused, internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
 
+    printf("Internal unused: total: %d average: %0.1f smallest: %d largest: %d \n", internalUnused,
+           internalUnusedAvg, internalUnusedSmall, internalUnusedLarge);
 
-    printf("External unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg, extUnusedSmall, extUnusedLarge);
-    
+    printf("External unused: total: %d average: %0.1f smallest: %d largest: %d \n", extUnused, extUnusedAvg,
+           extUnusedSmall, extUnusedLarge);
     
 }
 
